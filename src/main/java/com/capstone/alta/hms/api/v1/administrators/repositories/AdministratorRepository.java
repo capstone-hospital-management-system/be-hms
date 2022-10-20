@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
     Page<Administrator> findAll(Pageable pageable);
+
+    Administrator findByUsernameOrEmail(String username, String email);
 }
