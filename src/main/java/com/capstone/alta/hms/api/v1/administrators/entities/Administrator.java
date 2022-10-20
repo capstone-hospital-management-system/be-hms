@@ -32,18 +32,18 @@ public class Administrator {
     private String email;
 
     @Column(nullable = false)
-    private String id_card_number;
+    private String idCardNumber;
 
     @Column(nullable = false)
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date updated_at;
+    private Date updatedAt;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date created_at;
+    private Date createdAt;
 }
