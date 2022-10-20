@@ -11,6 +11,7 @@ public interface IAdministratorService {
     BaseResponseDTO<AdministratorResponseDTO> createNewAdministrator(
             AdministratorRequestDTO administratorRequestDTO);
     BaseResponseDTO<List<AdministratorResponseDTO>> getAllAdministrators(Pageable pageable);
-    
+    BaseResponseDTO<AdministratorResponseDTO> getAdministratorDetails(Long id);
+
 
 }
