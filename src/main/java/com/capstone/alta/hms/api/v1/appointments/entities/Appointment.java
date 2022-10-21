@@ -51,12 +51,4 @@ public class Appointment {
 
     @OneToOne(mappedBy = "appointment")
     private Diagnose diagnose;
-
-    /**
-     * PR: Relasi ke table :
-     * @clinic
-     * @patient => done
-     * @doctor -> table @accounts
-     */
-
 }
