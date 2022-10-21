@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.medicines.entities;
 
+import com.capstone.alta.hms.api.v1.prescriptions.entities.Prescription;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,7 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Medicine")
 @Table(name = "medicines")
@@ -42,8 +45,6 @@ public class Medicine {
     @LastModifiedDate
     private Date updatedAt;
 
-    /**
-     * Tech debt:
-     * many-to-many relationship to table prescription
-     */
+    @ManyToMany(mappedBy = "medicines")
+    private List<Prescription> prescriptions = new ArrayList<>();
 }

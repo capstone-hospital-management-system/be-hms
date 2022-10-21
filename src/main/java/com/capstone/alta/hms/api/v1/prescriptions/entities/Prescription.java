@@ -2,6 +2,7 @@ package com.capstone.alta.hms.api.v1.prescriptions.entities;
 
 import com.capstone.alta.hms.api.v1.bills.entities.Bill;
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
+import com.capstone.alta.hms.api.v1.medicines.entities.Medicine;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Prescription")
 @Table(name = "prescriptions")
@@ -46,4 +49,12 @@ public class Prescription {
 
     @OneToOne(mappedBy = "prescription")
     private Bill bill;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "prescriptions_medicines",
+        joinColumns = @JoinColumn(name = "prescription_id"),
+        inverseJoinColumns = @JoinColumn(name = "medicine_id")
+    )
+    private List<Medicine> medicines = new ArrayList<>();
 }
