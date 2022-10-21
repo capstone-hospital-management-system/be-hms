@@ -12,4 +12,5 @@ public interface IAccountService {
     BaseResponseDTO<List<AccountResponseDTO>> getAllAccounts(Pageable pageable);
     BaseResponseDTO<AccountResponseDTO> getAccountDetails(Integer id);
     BaseResponseDTO<AccountResponseDTO> updateAccount(Integer id, AccountRequestDTO accountRequestDTO);
+    BaseResponseDTO<AccountResponseDTO> deleteAccount(Integer id);
 }
