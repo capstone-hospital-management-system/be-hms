@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.clinics.entities;
 
+import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,7 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Clinic")
 @Table(name = "clinics")
@@ -35,4 +38,11 @@ public class Clinic {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+
+    @OneToMany(
+        mappedBy = "clinic",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Appointment> appointments = new ArrayList<>();
 }
