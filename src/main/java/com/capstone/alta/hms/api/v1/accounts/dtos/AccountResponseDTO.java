@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Converter;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +14,12 @@ import java.util.Date;
 @Setter
 public class AccountResponseDTO implements Serializable {
     private int id;
+
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @JsonProperty("last_name")
+    private String lastName;
 
     private String username;
 
@@ -23,7 +30,7 @@ public class AccountResponseDTO implements Serializable {
     @JsonProperty("register_date")
     private Date registerDate;
 
-    private String role;
+    private Role role;
 
     @JsonProperty("id_card")
     private String idCard;

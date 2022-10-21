@@ -14,6 +14,14 @@ import java.util.Date;
 @Setter
 public class AccountRequestDTO implements Serializable {
     @NotNull
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @NotNull
+    @JsonProperty("last_name")
+    private String lastName;
+
+    @NotNull
     private String username;
 
     @NotNull

@@ -4,6 +4,7 @@ import com.capstone.alta.hms.api.v1.accounts.dtos.AccountRequestDTO;
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
 import com.capstone.alta.hms.api.v1.accounts.services.IAccountService;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
+import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,24 +26,18 @@ public class AccountController {
         BaseResponseDTO<AccountResponseDTO> response =
             accountService.createNewAccount(accountRequestDTO);
 
-        if (response.getCode().equals("201")) {
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @GetMapping("/accounts")
-    public ResponseEntity<BaseResponseDTO<List<AccountResponseDTO>>> getAllAccounts(
+    public ResponseEntity<PageBaseResponseDTO<List<AccountResponseDTO>>> getAllAccounts(
             Pageable pageable) {
-        BaseResponseDTO<List<AccountResponseDTO>> response =
+        PageBaseResponseDTO<List<AccountResponseDTO>> response =
             accountService.getAllAccounts(pageable);
 
-        if (response.getCode().equals("200")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/accounts/{id}")
@@ -51,11 +46,7 @@ public class AccountController {
         BaseResponseDTO<AccountResponseDTO> response =
             accountService.getAccountDetails(id);
 
-        if (response.getCode().equals("200")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/accounts/{id}")
@@ -65,11 +56,8 @@ public class AccountController {
         BaseResponseDTO<AccountResponseDTO> response =
                 accountService.updateAccount(id, accountRequestDTO);
 
-        if (response.getCode().equals("200")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
-        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @DeleteMapping("/accounts/{id}")

@@ -6,6 +6,7 @@ import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.accounts.repositories.AccountRepository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
+import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,27 +33,19 @@ public class AccountService implements IAccountService{
             modelMapper.map(accountRequestDTO, Account.class)
         );
 
-        if (account != null) {
-            AccountResponseDTO accountResponseDTO =
-                modelMapper.map(account, AccountResponseDTO.class);
-            return new BaseResponseDTO<AccountResponseDTO>(
-                "201",
-                "CREATED",
-                "successfully creating data",
-                accountResponseDTO
-            );
-        }
+        AccountResponseDTO accountResponseDTO = modelMapper.map(
+            account, AccountResponseDTO.class);
 
         return new BaseResponseDTO<AccountResponseDTO>(
-            "422",
-            HttpStatus.UNPROCESSABLE_ENTITY.toString(),
-            "error",
-            null
+            "201",
+            HttpStatus.CREATED,
+            "successfully creating data",
+            accountResponseDTO
         );
     }
 
     @Override
-    public BaseResponseDTO<List<AccountResponseDTO>> getAllAccounts(Pageable pageable) {
+    public PageBaseResponseDTO<List<AccountResponseDTO>> getAllAccounts(Pageable pageable) {
         Page<Account> accounts = accountRepository.findAll(pageable);
 
         if (!accounts.isEmpty()) {
@@ -60,9 +53,9 @@ public class AccountService implements IAccountService{
                 .map(account -> modelMapper.map(account, AccountResponseDTO.class))
                 .collect(Collectors.toList());
 
-            return new BaseResponseDTO<>(
+            return new PageBaseResponseDTO<>(
                 "200",
-                HttpStatus.OK.toString(),
+                HttpStatus.OK,
                 "successfully retrieving data",
                 accountResponseDTOS,
                 new MetaResponseDTO(
@@ -74,33 +67,30 @@ public class AccountService implements IAccountService{
             );
         }
 
-        return new BaseResponseDTO<>(
+        return new PageBaseResponseDTO<>(
             "204",
-            HttpStatus.NO_CONTENT.toString(),
+            HttpStatus.NO_CONTENT,
             "data is empty",
-            Collections.emptyList()
+            Collections.emptyList(),
+            new MetaResponseDTO(
+            accounts.getNumber() + 1,
+                accounts.getSize(),
+                accounts.getTotalPages(),
+                accounts.getTotalElements()
+            )
         );
     }
 
     @Override
     public BaseResponseDTO<AccountResponseDTO> getAccountDetails(Integer id) {
         Account account = accountRepository.findById(id).get();
-
-        if (account != null) {
-            return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK.toString(),
-                "success",
-                modelMapper.map(account, AccountResponseDTO.class)
-            );
-        }
-
         return new BaseResponseDTO<>(
-                "404",
-                HttpStatus.NOT_FOUND.toString(),
-                "data is empty",
-                new AccountResponseDTO()
+            "200",
+            HttpStatus.OK,
+            "success",
+            modelMapper.map(account, AccountResponseDTO.class)
         );
+
     }
 
     @Override
@@ -109,20 +99,12 @@ public class AccountService implements IAccountService{
         accountUpdate.setId(id);
 
         Account account = accountRepository.save(accountUpdate);
-        if (account.equals(accountUpdate)) {
-            return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK.toString(),
-                "successfully updating data",
-                modelMapper.map(account, AccountResponseDTO.class)
-            );
-        }
 
         return new BaseResponseDTO<>(
-                "422",
-                HttpStatus.UNPROCESSABLE_ENTITY.toString(),
-                "failed to update data",
-                new AccountResponseDTO()
+            "200",
+            HttpStatus.OK,
+            "successfully updating data",
+            modelMapper.map(account, AccountResponseDTO.class)
         );
     }
 
@@ -132,7 +114,7 @@ public class AccountService implements IAccountService{
 
         return new BaseResponseDTO<>(
             "204",
-            HttpStatus.NO_CONTENT.toString(),
+            HttpStatus.NO_CONTENT,
             "successfully deleting data",
             new AccountResponseDTO()
         );
