@@ -11,4 +11,5 @@ public interface IAccountService {
     BaseResponseDTO<AccountResponseDTO> createNewAccount(AccountRequestDTO accountRequestDTO);
     BaseResponseDTO<List<AccountResponseDTO>> getAllAccounts(Pageable pageable);
     BaseResponseDTO<AccountResponseDTO> getAccountDetails(Integer id);
+    BaseResponseDTO<AccountResponseDTO> updateAccount(Integer id, AccountRequestDTO accountRequestDTO);
 }
