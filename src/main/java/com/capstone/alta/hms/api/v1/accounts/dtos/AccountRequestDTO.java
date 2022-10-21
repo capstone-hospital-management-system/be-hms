@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.accounts.dtos;
 
 import com.capstone.alta.hms.api.v1.accounts.utils.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class AccountRequestDTO implements Serializable {
 
     @NotNull
     @JsonProperty("register_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date registerDate;
 
     @NotNull

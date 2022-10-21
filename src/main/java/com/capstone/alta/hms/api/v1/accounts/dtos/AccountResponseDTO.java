@@ -23,7 +23,7 @@ public class AccountResponseDTO implements Serializable {
     @JsonProperty("register_date")
     private Date registerDate;
 
-    private Role role;
+    private String role;
 
     @JsonProperty("id_card")
     private String idCard;

@@ -1,22 +1,32 @@
 package com.capstone.alta.hms.api.v1.core.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class MetaResponseDTO implements Serializable {
     private int page;
-    private int per_page;
-    private int total_page;
-    private int total_data;
+
+    @JsonProperty("per_page")
+    private int perPage;
+    @JsonProperty("total_page")
+    private int totalPage;
+    @JsonProperty("total_data")
+    private long totalData;
 
     public MetaResponseDTO(
         int page,
-        int per_page,
-        int total_page,
-        int total_data
+        int perPage,
+        int totalPage,
+        long totalData
     ) {
         this.page = page;
-        this.per_page = per_page;
-        this.total_page = total_page;
-        this.total_data = total_data;
+        this.perPage = perPage;
+        this.totalPage = totalPage;
+        this.totalData = totalData;
     }
 }
