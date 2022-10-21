@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.diagnoses.entities;
 
 import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.treatments.entities.Treatment;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,8 +44,6 @@ public class Diagnose {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    /**
-     * Tech debt:
-     * 1. relationship to table appointment
-     */
+    @OneToOne(mappedBy = "diagnose")
+    private Treatment treatment;
 }
