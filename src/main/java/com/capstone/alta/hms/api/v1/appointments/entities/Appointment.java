@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.appointments.entities;
 
+import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,10 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    private Account doctor;
 
     /**
      * PR: Relasi ke table :
