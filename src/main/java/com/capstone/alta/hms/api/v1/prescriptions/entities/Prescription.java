@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.prescriptions.entities;
 
+import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,9 +39,7 @@ public class Prescription {
     @LastModifiedDate
     private Date updatedAt;
 
-    /**
-     * Tech debt:
-     * 1. relationship to table diagnose
-     * 2. change field status data type to its own ENUM
-     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "diagnose_id")
+    private Diagnose diagnose;
 }

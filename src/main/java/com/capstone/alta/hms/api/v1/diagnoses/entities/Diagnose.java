@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.diagnoses.entities;
 
 import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.prescriptions.entities.Prescription;
 import com.capstone.alta.hms.api.v1.treatments.entities.Treatment;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,4 +47,7 @@ public class Diagnose {
 
     @OneToOne(mappedBy = "diagnose")
     private Treatment treatment;
+
+    @OneToOne(mappedBy = "diagnose")
+    private Prescription prescription;
 }
