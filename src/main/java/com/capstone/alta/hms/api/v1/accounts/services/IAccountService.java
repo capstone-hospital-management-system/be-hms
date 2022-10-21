@@ -10,4 +10,5 @@ import java.util.List;
 public interface IAccountService {
     BaseResponseDTO<AccountResponseDTO> createNewAccount(AccountRequestDTO accountRequestDTO);
     BaseResponseDTO<List<AccountResponseDTO>> getAllAccounts(Pageable pageable);
+    BaseResponseDTO<AccountResponseDTO> getAccountDetails(Integer id);
 }
