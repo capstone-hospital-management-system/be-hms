@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.patients.entities;
 
+import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -69,4 +70,7 @@ public class Patient {
     @LastModifiedDate
     private Date updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "register_by")
+    private Account registerBy;
 }
