@@ -1,4 +1,5 @@
 package com.capstone.alta.hms.api.v1.accounts.entities;
+import com.capstone.alta.hms.api.v1.accounts.utils.Role;
 import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +35,7 @@ public class Account {
     private Date registerDate;
 
     @Column(nullable = false, length = 100)
-    private String role; // change this to enum latter
+    private Role role;
 
     @Column(nullable = false, length = 100)
     private String idCard;
