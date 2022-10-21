@@ -63,7 +63,7 @@ public class AccountController {
     @DeleteMapping("/accounts/{id}")
     public ResponseEntity<BaseResponseDTO<AccountResponseDTO>> deleteAccount(@PathVariable Integer id) {
         BaseResponseDTO response = accountService.deleteAccount(id);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

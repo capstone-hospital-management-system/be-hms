@@ -68,8 +68,8 @@ public class AccountService implements IAccountService{
         }
 
         return new PageBaseResponseDTO<>(
-            "204",
-            HttpStatus.NO_CONTENT,
+            "200",
+            HttpStatus.OK,
             "data is empty",
             Collections.emptyList(),
             new MetaResponseDTO(
@@ -113,10 +113,10 @@ public class AccountService implements IAccountService{
         accountRepository.deleteById(id);
 
         return new BaseResponseDTO<>(
-            "204",
-            HttpStatus.NO_CONTENT,
+            "200",
+            HttpStatus.OK,
             "successfully deleting data",
-            new AccountResponseDTO()
+            null
         );
     }
 }
