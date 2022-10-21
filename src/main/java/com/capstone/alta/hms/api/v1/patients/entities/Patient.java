@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.patients.entities;
 
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
+import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Patient")
 @Table(name = "patients")
@@ -77,4 +80,11 @@ public class Patient {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
     private Account updatedBy;
+
+    @OneToMany(
+        mappedBy = "patient",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Appointment> appointments = new ArrayList<>();
 }

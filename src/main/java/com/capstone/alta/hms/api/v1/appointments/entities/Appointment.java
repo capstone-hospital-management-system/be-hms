@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.appointments.entities;
 
+import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -33,10 +34,14 @@ public class Appointment {
     @LastModifiedDate
     private Date updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
     /**
      * PR: Relasi ke table :
      * @clinic
-     * @patient
+     * @patient => done
      * @doctor -> table @accounts
      */
 
