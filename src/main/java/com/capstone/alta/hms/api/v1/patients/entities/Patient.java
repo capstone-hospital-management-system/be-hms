@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity(name = "Patient")
@@ -50,7 +51,7 @@ public class Patient {
     private String postalCode;
 
     @Column(nullable = false)
-    private Date registerDate;
+    private LocalDateTime registerDate;
 
     @Column(nullable = false, length = 50)
     private String username;
