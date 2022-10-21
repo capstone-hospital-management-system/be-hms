@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.diagnoses.entities;
 
+import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -37,6 +38,10 @@ public class Diagnose {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     /**
      * Tech debt:
