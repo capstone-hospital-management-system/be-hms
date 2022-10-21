@@ -73,4 +73,8 @@ public class Patient {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_by")
     private Account registerBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by")
+    private Account updatedBy;
 }
