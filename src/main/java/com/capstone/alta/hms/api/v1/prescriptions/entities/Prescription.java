@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.prescriptions.entities;
 
+import com.capstone.alta.hms.api.v1.bills.entities.Bill;
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,4 +43,7 @@ public class Prescription {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "diagnose_id")
     private Diagnose diagnose;
+
+    @OneToOne(mappedBy = "prescription")
+    private Bill bill;
 }

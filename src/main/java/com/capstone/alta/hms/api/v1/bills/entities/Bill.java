@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.bills.entities;
 
+import com.capstone.alta.hms.api.v1.prescriptions.entities.Prescription;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -33,8 +34,7 @@ public class Bill {
     @LastModifiedDate
     private Date updatedAt;
 
-    /**
-     * Tech debt:
-     * 1. relationship to table prescription
-     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
 }
