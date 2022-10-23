@@ -54,9 +54,6 @@ public class Patient {
     @Column(nullable = false, length = 10)
     private String postalCode;
 
-    @Column(nullable = false)
-    private LocalDateTime registerDate;
-
     @Column(nullable = false, length = 50)
     private String username;
 
