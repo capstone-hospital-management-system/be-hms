@@ -23,7 +23,7 @@ public class PatientResponseDTO implements Serializable {
 
     private short age;
 
-    private Gender gender; //change this to enum latter
+    private Gender gender;
 
     private String address;
 
