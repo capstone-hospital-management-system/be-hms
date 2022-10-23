@@ -2,6 +2,7 @@ package com.capstone.alta.hms.api.v1.patients.entities;
 
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
 import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +48,7 @@ public class Patient {
     private String city;
 
     @Column(length = 5)
-    private String bloodType; //change this to enum latter
+    private BloodType bloodType;
 
     @Column(nullable = false, length = 20)
     private String phoneNumber;

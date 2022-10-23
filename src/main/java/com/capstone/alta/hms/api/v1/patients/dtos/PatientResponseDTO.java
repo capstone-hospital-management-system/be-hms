@@ -1,5 +1,6 @@
 package com.capstone.alta.hms.api.v1.patients.dtos;
 
+import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
 import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
@@ -30,7 +31,7 @@ public class PatientResponseDTO implements Serializable {
     private String city;
 
     @JsonProperty("blood_type")
-    private String bloodType; //change this to enum latter
+    private BloodType bloodType;
 
     @JsonProperty("phone_number")
     private String phoneNumber;
