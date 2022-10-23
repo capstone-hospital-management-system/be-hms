@@ -29,7 +29,7 @@ public class PatientRequestDTO implements Serializable {
     private short age;
 
     @NotNull
-    private Gender gender; //change this to enum latter
+    private Gender gender;
 
     @NotNull
     private String address;
