@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountService implements IAccountService{
+public class AccountService implements IAccountService {
     @Autowired
     AccountRepository accountRepository;
 
@@ -90,7 +90,6 @@ public class AccountService implements IAccountService{
             "success",
             modelMapper.map(account, AccountResponseDTO.class)
         );
-
     }
 
     @Override

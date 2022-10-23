@@ -27,7 +27,6 @@ public class AccountController {
             accountService.createNewAccount(accountRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-
     }
 
     @GetMapping("/accounts")
@@ -37,7 +36,6 @@ public class AccountController {
             accountService.getAllAccounts(pageable);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @GetMapping("/accounts/{id}")
@@ -57,7 +55,6 @@ public class AccountController {
                 accountService.updateAccount(id, accountRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @DeleteMapping("/accounts/{id}")
@@ -65,5 +62,4 @@ public class AccountController {
         BaseResponseDTO response = accountService.deleteAccount(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }
