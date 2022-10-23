@@ -7,11 +7,11 @@ import java.util.stream.Stream;
 @Converter(autoApply = true)
 public class GenderConverter implements AttributeConverter<Gender, String> {
     @Override
-    public String convertToDatabaseColumn(Gender role) {
-        if (role == null) {
+    public String convertToDatabaseColumn(Gender gender) {
+        if (gender == null) {
             return null;
         }
-        return role.getCode();
+        return gender.getCode();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class GenderConverter implements AttributeConverter<Gender, String> {
         }
 
         return Stream.of(Gender.values())
-            .filter(role -> role.getCode().equals(code))
+            .filter(gender -> gender.getCode().equals(code))
             .findFirst()
             .orElseThrow(IllegalArgumentException::new);
     }
