@@ -2,6 +2,7 @@ package com.capstone.alta.hms.api.v1.patients.entities;
 
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -37,7 +38,7 @@ public class Patient {
     private short age;
 
     @Column(nullable = false, length = 10)
-    private String gender; //change this to enum latter
+    private Gender gender;
 
     @Column(nullable = false)
     private String address;
