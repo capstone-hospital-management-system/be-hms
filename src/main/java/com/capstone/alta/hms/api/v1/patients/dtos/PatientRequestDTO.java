@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.patients.dtos;
 
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
+import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class PatientRequestDTO implements Serializable {
     private short age;
 
     @NotNull
-    private String gender; //change this to enum latter
+    private Gender gender; //change this to enum latter
 
     @NotNull
     private String address;
