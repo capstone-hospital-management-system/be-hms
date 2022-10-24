@@ -59,7 +59,7 @@ public class MedicineController {
 
   @DeleteMapping("/medicines/{id}")
   public ResponseEntity<BaseResponseDTO<MedicineResponseDTO>> deleteMedicine(@PathVariable Integer id) {
-    BaseResponseDTO response = medicineService.deleteMedicine(id);
+    BaseResponseDTO<MedicineResponseDTO> response = medicineService.deleteMedicine(id);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 }
