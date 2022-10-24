@@ -49,13 +49,12 @@ public class PatientController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/accounts/{accountId}/patients/{id}")
+    @PutMapping("/patients/{id}")
     public ResponseEntity<BaseResponseDTO<PatientResponseDTO>> updatePatient(
-        @PathVariable Integer accountId,
         @PathVariable Integer id,
         @RequestBody PatientRequestDTO patientRequestDTO) {
         BaseResponseDTO<PatientResponseDTO> response =
-            patientService.updatePatient(accountId, id, patientRequestDTO);
+            patientService.updatePatient(id, patientRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

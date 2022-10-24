@@ -105,25 +105,21 @@ public class PatientService implements IPatientService {
 
     @Override
     public BaseResponseDTO<PatientResponseDTO> updatePatient(
-        Integer accountId,
         Integer id,
         PatientRequestDTO patientRequestDTO) {
 
-        Optional<Patient> patient = accountRepository.findById(accountId)
-            .map(account -> {
-                Account registrarAccount = patientRepository.findById(id).get().getRegisterBy();
-                patientRequestDTO.setUpdatedBy(account);
-                Patient updatedPatient = modelMapper.map(patientRequestDTO, Patient.class);
-                updatedPatient.setId(id);
-                updatedPatient.setRegisterBy(registrarAccount);
-                return patientRepository.save(updatedPatient);
-            });
+        Account registrarAccount = patientRepository.findById(id).get().getRegisterBy();
+        Patient patientUpdate = modelMapper.map(patientRequestDTO, Patient.class);
+        patientUpdate.setId(id);
+        patientUpdate.setRegisterBy(registrarAccount);
+
+        Patient patient = patientRepository.save(patientUpdate);
 
         return new BaseResponseDTO<>(
                 "200",
                 HttpStatus.OK,
                 "successfully updating data",
-                modelMapper.map(patient.get(), PatientResponseDTO.class)
+                modelMapper.map(patient, PatientResponseDTO.class)
         );
     }
 
