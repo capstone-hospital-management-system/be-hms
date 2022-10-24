@@ -4,6 +4,7 @@ import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.clinics.entities.Clinic;
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,17 +39,30 @@ public class Appointment {
     private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id", nullable = false)
+    @JsonIgnore
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonIgnore
     private Account doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clinic_id")
+    @JoinColumn(name = "clinic_id", nullable = false)
+    @JsonIgnore
     private Clinic clinic;
 
     @OneToOne(mappedBy = "appointment")
     private Diagnose diagnose;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = false)
+    @JsonIgnore
+    private Account createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updatedBy", nullable = false)
+    @JsonIgnore
+    private Account updatedBy;
 }
