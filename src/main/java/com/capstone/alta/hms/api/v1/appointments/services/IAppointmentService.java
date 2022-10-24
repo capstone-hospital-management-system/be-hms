@@ -6,6 +6,5 @@ import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 
 public interface IAppointmentService {
     BaseResponseDTO<AppointmentResponseDTO> createNewAppointment(
-        Integer accountId,
         AppointmentRequestDTO appointmentRequestDTO);
 }
