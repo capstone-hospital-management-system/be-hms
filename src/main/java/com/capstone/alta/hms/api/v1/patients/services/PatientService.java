@@ -85,4 +85,15 @@ public class PatientService implements IPatientService {
             )
         );
     }
+
+    @Override
+    public BaseResponseDTO<PatientResponseDTO> getPatientDetails(Integer id) {
+        Patient patient = patientRepository.findById(id).get();
+        return new BaseResponseDTO<>(
+            "200",
+            HttpStatus.OK,
+            "success",
+            modelMapper.map(patient, PatientResponseDTO.class)
+        );
+    }
 }

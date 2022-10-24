@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,14 @@ public class PatientController {
         Pageable pageable) {
         PageBaseResponseDTO<List<PatientResponseDTO>> response =
             patientService.getAllPatients(pageable);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/patients/{id}")
+    public ResponseEntity<BaseResponseDTO<PatientResponseDTO>> getPatientDetails(
+        @PathVariable Integer id) {
+        BaseResponseDTO<PatientResponseDTO> response = patientService.getPatientDetails(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
