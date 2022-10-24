@@ -38,19 +38,20 @@ public class PatientService implements IPatientService {
 
     @Override
     public BaseResponseDTO<PatientResponseDTO> createNewPatient(
-        Integer accountId, PatientRequestDTO patientRequestDTO) {
-        Optional<Patient> patient = accountRepository.findById(accountId)
-                .map(account -> {
-                    patientRequestDTO.setRegisterBy(account);
-                    patientRequestDTO.setUpdatedBy(account);
-                    return patientRepository.save(modelMapper.map(patientRequestDTO, Patient.class));
-                });
+        PatientRequestDTO patientRequestDTO) {
+
+        Patient patient = patientRepository.save(
+            modelMapper.map(patientRequestDTO, Patient.class)
+        );
+
+        PatientResponseDTO patientResponseDTO = modelMapper.map(
+            patient, PatientResponseDTO.class);
 
         return new BaseResponseDTO<>(
-                "201",
-                HttpStatus.CREATED,
-                "successfully creating data",
-                modelMapper.map(patient.get(), PatientResponseDTO.class)
+            "201",
+            HttpStatus.CREATED,
+            "successfully creating data",
+            patientResponseDTO
         );
     }
 
