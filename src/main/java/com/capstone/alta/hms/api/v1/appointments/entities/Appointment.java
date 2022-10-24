@@ -51,4 +51,12 @@ public class Appointment {
 
     @OneToOne(mappedBy = "appointment")
     private Diagnose diagnose;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private Account createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updatedBy")
+    private Account updatedBy;
 }
