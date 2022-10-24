@@ -42,4 +42,12 @@ public class AppointmentRequestDTO implements Serializable {
 
     @NotNull
     private Clinic clinic;
+
+    @NotNull
+    @JsonProperty("created_by")
+    private Account createdBy;
+
+    @NotNull
+    @JsonProperty("updated_by")
+    private Account updatedBy;
 }
