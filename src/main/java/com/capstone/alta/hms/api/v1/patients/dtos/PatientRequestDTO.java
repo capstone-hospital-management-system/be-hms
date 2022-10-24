@@ -3,11 +3,18 @@ package com.capstone.alta.hms.api.v1.patients.dtos;
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
 import com.capstone.alta.hms.api.v1.patients.utils.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -52,5 +59,18 @@ public class PatientRequestDTO implements Serializable {
     private String username;
 
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bod;
+
+    @JsonProperty("register_by")
+    private Account registerBy;
+
+    @JsonProperty("updated_by")
+    private Account updatedBy;
+
+    @JsonIgnore
+    private Date createdAt;
+
+    @JsonIgnore
+    private Date updatedAt;
 }
