@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IPatientService {
-    BaseResponseDTO<PatientResponseDTO> createNewPatient(Integer accountId, PatientRequestDTO patientRequestDTO);
+    BaseResponseDTO<PatientResponseDTO> createNewPatient(PatientRequestDTO patientRequestDTO);
     PageBaseResponseDTO<List<PatientResponseDTO>> getAllPatients(Pageable pageable);
     BaseResponseDTO<PatientResponseDTO> getPatientDetails(Integer id);
-    BaseResponseDTO<PatientResponseDTO> updatePatient(Integer accountId, Integer id, PatientRequestDTO patientRequestDTO);
+    BaseResponseDTO<PatientResponseDTO> updatePatient(Integer id, PatientRequestDTO patientRequestDTO);
     BaseResponseDTO<PatientResponseDTO> deletePatient(Integer id);
 }

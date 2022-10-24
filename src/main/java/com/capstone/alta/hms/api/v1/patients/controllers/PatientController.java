@@ -16,17 +16,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class PatientController {
     @Autowired
     IPatientService patientService;
 
-    @PostMapping("/accounts/{accountId}/patients")
+    @PostMapping("/patients")
     public ResponseEntity<BaseResponseDTO<PatientResponseDTO>> createNewPatient(
-            @PathVariable Integer accountId, @RequestBody PatientRequestDTO patientRequestDTO) {
+            @RequestBody PatientRequestDTO patientRequestDTO) {
         BaseResponseDTO<PatientResponseDTO> response =
-                patientService.createNewPatient(accountId, patientRequestDTO);
+                patientService.createNewPatient(patientRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -48,13 +49,12 @@ public class PatientController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/accounts/{accountId}/patients/{id}")
+    @PutMapping("/patients/{id}")
     public ResponseEntity<BaseResponseDTO<PatientResponseDTO>> updatePatient(
-        @PathVariable Integer accountId,
         @PathVariable Integer id,
         @RequestBody PatientRequestDTO patientRequestDTO) {
         BaseResponseDTO<PatientResponseDTO> response =
-            patientService.updatePatient(accountId, id, patientRequestDTO);
+            patientService.updatePatient(id, patientRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
