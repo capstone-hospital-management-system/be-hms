@@ -9,12 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -69,8 +63,10 @@ public class PatientRequestDTO implements Serializable {
     private Account updatedBy;
 
     @JsonIgnore
+    @JsonProperty("created_at")
     private Date createdAt;
 
     @JsonIgnore
+    @JsonProperty("updated_at")
     private Date updatedAt;
 }
