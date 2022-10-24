@@ -21,6 +21,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class PatientResponseDTO implements Serializable {
+    private Integer id;
+
     @JsonProperty("first_name")
     private String firstName;
 
