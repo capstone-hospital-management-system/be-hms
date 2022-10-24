@@ -125,4 +125,16 @@ public class PatientService implements IPatientService {
                 modelMapper.map(patient.get(), PatientResponseDTO.class)
         );
     }
+
+    @Override
+    public BaseResponseDTO<PatientResponseDTO> deletePatient(Integer id) {
+        patientRepository.deleteById(id);
+
+        return new BaseResponseDTO<>(
+                "200",
+                HttpStatus.OK,
+                "successfully deleting data",
+                null
+        );
+    }
 }

@@ -58,4 +58,10 @@ public class PatientController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/patients/{id}")
+    public ResponseEntity<BaseResponseDTO<PatientResponseDTO>> deleteAccount(@PathVariable Integer id) {
+        BaseResponseDTO response = patientService.deletePatient(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

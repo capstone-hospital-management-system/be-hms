@@ -15,4 +15,5 @@ public interface IPatientService {
     PageBaseResponseDTO<List<PatientResponseDTO>> getAllPatients(Pageable pageable);
     BaseResponseDTO<PatientResponseDTO> getPatientDetails(Integer id);
     BaseResponseDTO<PatientResponseDTO> updatePatient(Integer accountId, Integer id, PatientRequestDTO patientRequestDTO);
+    BaseResponseDTO<PatientResponseDTO> deletePatient(Integer id);
 }
