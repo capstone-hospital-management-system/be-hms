@@ -1,5 +1,7 @@
 package com.capstone.alta.hms.api.v1.patients.services;
 
+import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
+import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.accounts.repositories.AccountRepository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
@@ -8,7 +10,10 @@ import com.capstone.alta.hms.api.v1.patients.dtos.PatientRequestDTO;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.capstone.alta.hms.api.v1.patients.repositories.PatientRepository;
+import org.modelmapper.Condition;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -94,6 +99,30 @@ public class PatientService implements IPatientService {
             HttpStatus.OK,
             "success",
             modelMapper.map(patient, PatientResponseDTO.class)
+        );
+    }
+
+    @Override
+    public BaseResponseDTO<PatientResponseDTO> updatePatient(
+        Integer accountId,
+        Integer id,
+        PatientRequestDTO patientRequestDTO) {
+
+        Optional<Patient> patient = accountRepository.findById(accountId)
+            .map(account -> {
+                Account registrarAccount = patientRepository.findById(id).get().getRegisterBy();
+                patientRequestDTO.setUpdatedBy(account);
+                Patient updatedPatient = modelMapper.map(patientRequestDTO, Patient.class);
+                updatedPatient.setId(id);
+                updatedPatient.setRegisterBy(registrarAccount);
+                return patientRepository.save(updatedPatient);
+            });
+
+        return new BaseResponseDTO<>(
+                "200",
+                HttpStatus.OK,
+                "successfully updating data",
+                modelMapper.map(patient.get(), PatientResponseDTO.class)
         );
     }
 }
