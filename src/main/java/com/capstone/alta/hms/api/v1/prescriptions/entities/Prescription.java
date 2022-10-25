@@ -3,6 +3,8 @@ package com.capstone.alta.hms.api.v1.prescriptions.entities;
 import com.capstone.alta.hms.api.v1.bills.entities.Bill;
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
 import com.capstone.alta.hms.api.v1.medicines.entities.Medicine;
+import com.capstone.alta.hms.api.v1.prescriptions.utils.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,7 +30,7 @@ public class Prescription {
     private String description;
 
     @Column(nullable = false, length = 15)
-    private String status;
+    private Status status;
 
     @Column(columnDefinition = "TEXT")
     private String others;
@@ -43,6 +45,7 @@ public class Prescription {
     @LastModifiedDate
     private Date updatedAt;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "diagnose_id")
     private Diagnose diagnose;
