@@ -59,7 +59,8 @@ public class Patient {
     @Column(nullable = false, length = 50)
     private String username;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date bod;
 
     @Column(nullable = false, updatable = false)
