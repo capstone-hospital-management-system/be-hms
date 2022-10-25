@@ -28,21 +28,17 @@ public class AppointmentService implements IAppointmentService{
 
     @Override
     public BaseResponseDTO<AppointmentResponseDTO> createNewAppointment(
-        Integer accountId,
         AppointmentRequestDTO appointmentRequestDTO) {
 
-        Optional<Appointment> appointment = accountRepository.findById(accountId)
-                .map(account -> {
-                    appointmentRequestDTO.setCreatedBy(account);
-                    appointmentRequestDTO.setUpdatedBy(account);
-                    return appointmentRespository.save(modelMapper.map(appointmentRequestDTO, Appointment.class));
-                });
+        Appointment appointment = appointmentRespository.save(
+            modelMapper.map(appointmentRequestDTO, Appointment.class)
+        );
 
         return new BaseResponseDTO<>(
-                "201",
-                HttpStatus.CREATED,
-                "successfully creating data",
-                modelMapper.map(appointment.get(), AppointmentResponseDTO.class)
+            "201",
+            HttpStatus.CREATED,
+            "successfully creating data",
+            modelMapper.map(appointment, AppointmentResponseDTO.class)
         );
     }
 }

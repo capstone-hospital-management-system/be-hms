@@ -1,7 +1,9 @@
 package com.capstone.alta.hms.api.v1.appointments.dtos;
 
+import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.clinics.entities.Clinic;
+import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,22 +19,22 @@ import java.util.Date;
 @Getter
 @Setter
 public class AppointmentResponseDTO implements Serializable {
+    private Integer id;
+
     @JsonProperty("appointment_date")
     private LocalDateTime appointmentDate;
 
     @JsonProperty("created_at")
-    @JsonIgnore
     private Date createdAt;
 
-    @JsonProperty("created_at")
-    @JsonIgnore
+    @JsonProperty("updated_at")
     private Date updatedAt;
 
     @NotNull
-    private Patient patient;
+    private PatientResponseDTO patient;
 
     @NotNull
-    private Account doctor;
+    private AccountResponseDTO doctor;
 
     @NotNull
     private Clinic clinic;

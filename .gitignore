@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 docker-compose.yml
+node_modules/
+package-lock.json
+package.json

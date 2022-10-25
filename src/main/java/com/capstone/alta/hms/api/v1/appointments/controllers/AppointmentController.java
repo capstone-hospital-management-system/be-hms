@@ -9,19 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class AppointmentController {
     @Autowired
     IAppointmentService appointmentService;
 
-    @PostMapping("/accounts/{accountId}/appointments")
+    @PostMapping("/appointments")
     public ResponseEntity<BaseResponseDTO<AppointmentResponseDTO>> createNewAppointment(
-        @PathVariable Integer accountId,
         @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
 
         BaseResponseDTO<AppointmentResponseDTO> response =
-            appointmentService.createNewAppointment(accountId, appointmentRequestDTO);
+            appointmentService.createNewAppointment(appointmentRequestDTO);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
