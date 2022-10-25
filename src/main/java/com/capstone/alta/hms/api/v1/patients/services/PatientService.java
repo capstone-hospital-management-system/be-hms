@@ -40,6 +40,7 @@ public class PatientService implements IPatientService {
     public BaseResponseDTO<PatientResponseDTO> createNewPatient(
         PatientRequestDTO patientRequestDTO) {
 
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Patient patient = patientRepository.save(
             modelMapper.map(patientRequestDTO, Patient.class)
         );
