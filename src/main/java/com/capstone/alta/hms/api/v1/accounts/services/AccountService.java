@@ -8,6 +8,7 @@ import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ public class AccountService implements IAccountService {
     @Override
     public BaseResponseDTO<AccountResponseDTO> createNewAccount(
         AccountRequestDTO accountRequestDTO) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Account account = accountRepository.save(
             modelMapper.map(accountRequestDTO, Account.class)
         );
