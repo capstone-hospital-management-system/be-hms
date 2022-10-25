@@ -30,6 +30,7 @@ public class AccountService implements IAccountService {
     @Override
     public BaseResponseDTO<AccountResponseDTO> createNewAccount(
         AccountRequestDTO accountRequestDTO) {
+
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Account account = accountRepository.save(
             modelMapper.map(accountRequestDTO, Account.class)
