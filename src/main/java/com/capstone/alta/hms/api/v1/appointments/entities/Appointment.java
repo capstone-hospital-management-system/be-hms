@@ -62,7 +62,7 @@ public class Appointment {
     private Account createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updatedBy", nullable = false)
+    @JoinColumn(name = "updated_by", nullable = false)
     @JsonIgnore
     private Account updatedBy;
 }
