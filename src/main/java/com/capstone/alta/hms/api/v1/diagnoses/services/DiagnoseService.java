@@ -134,23 +134,14 @@ public class DiagnoseService implements IDiagnoseService {
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> deleteDiagnose(Integer id) {
-        Diagnose diagnose = diagnoseRepository.findById(id).orElse(null);
 
-        if(diagnose != null) {
-            diagnoseRepository.delete(diagnose);
-            return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
-                    "successfully deleting data",
-                    null
-            );
-        } else {
-            return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
-                    "data not found",
-                    null
-            );
-        }
+        diagnoseRepository.deleteById(id);
+
+        return new BaseResponseDTO<>(
+                "200",
+                HttpStatus.OK,
+                "successfully deleting data",
+                null
+        );
     }
 }
