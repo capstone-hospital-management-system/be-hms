@@ -38,32 +38,20 @@ public class DiagnoseController {
     public ResponseEntity<BaseResponseDTO<DiagnoseResponseDTO>> getDiagnoseDetail(@PathVariable Integer id) {
         BaseResponseDTO<DiagnoseResponseDTO> response = diagnoseService.getDiagnoseDetail(id);
 
-        if(response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/diagnoses/{id}")
     public ResponseEntity<BaseResponseDTO<DiagnoseResponseDTO>> updateDiagnose(@PathVariable Integer id, @RequestBody DiagnoseRequestDTO diagnoseRequestDTO) {
         BaseResponseDTO<DiagnoseResponseDTO> response = diagnoseService.updateDiagnose(id, diagnoseRequestDTO);
 
-        if(response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/diagnoses/{id}")
     public ResponseEntity<BaseResponseDTO<DiagnoseResponseDTO>> deleteDiagnose(@PathVariable Integer id) {
         BaseResponseDTO<DiagnoseResponseDTO> response = diagnoseService.deleteDiagnose(id);
 
-        if(response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

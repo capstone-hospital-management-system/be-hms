@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class ClinicController {
@@ -44,11 +45,7 @@ public class ClinicController {
         BaseResponseDTO<ClinicResponseDTO> response =
             clinicService.getClinicDetails(id);
 
-        if (response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/clinics/{id}")
@@ -58,21 +55,14 @@ public class ClinicController {
         BaseResponseDTO<ClinicResponseDTO> response =
                 clinicService.updateClinic(id, clinicRequestDTO);
 
-        if (response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/clinics/{id}")
     public ResponseEntity<BaseResponseDTO<ClinicResponseDTO>> deleteClinic(@PathVariable Integer id) {
         BaseResponseDTO<ClinicResponseDTO> response = clinicService.deleteClinic(id);
-        if (response.getData() == null) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
