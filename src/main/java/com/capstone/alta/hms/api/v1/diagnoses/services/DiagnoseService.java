@@ -113,28 +113,23 @@ public class DiagnoseService implements IDiagnoseService {
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> updateDiagnose(Integer id, DiagnoseRequestDTO diagnoseRequestDTO) {
-        Diagnose diagnose = diagnoseRepository.findById(id).orElse(null);
+        Appointment appointment = appointmentRepository.findById(diagnoseRequestDTO.getAppointmentId()).get();
 
-        if (diagnose != null) {
-            modelMapper.map(diagnoseRequestDTO, diagnose);
-            diagnoseRepository.save(diagnose);
+        Diagnose newDiagnose = new Diagnose();
+        newDiagnose.setId(id);
+        newDiagnose.setAppointment(appointment);
+        newDiagnose.setName(diagnoseRequestDTO.getName());
+        newDiagnose.setDescription(diagnoseRequestDTO.getDescription());
+        newDiagnose.setReport(diagnoseRequestDTO.getReport());
 
-            DiagnoseResponseDTO diagnoseResponseDTO = modelMapper.map(diagnose, DiagnoseResponseDTO.class);
+        Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
-            return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
-                    "successfully updating data",
-                    diagnoseResponseDTO
-            );
-        } else {
-            return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
-                    "data not found",
-                    null
-            );
-        }
+        return new BaseResponseDTO<DiagnoseResponseDTO>(
+                "200",
+                HttpStatus.OK,
+                "successfully updating data",
+                modelMapper.map(diagnose, DiagnoseResponseDTO.class)
+        );
     }
 
     @Override
