@@ -7,6 +7,9 @@ import com.capstone.alta.hms.api.v1.bills.repositories.BillRepository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
+import com.capstone.alta.hms.api.v1.prescriptions.dtos.PrescriptionResponseDTO;
+import com.capstone.alta.hms.api.v1.prescriptions.entities.Prescription;
+import com.capstone.alta.hms.api.v1.prescriptions.repositories.PrescriptionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +27,26 @@ public class BillService implements IBillService {
   BillRepository billRepository;
 
   @Autowired
+  PrescriptionRepository prescriptionRepository;
+
+  @Autowired
   ModelMapper modelMapper;
 
   @Override
   public BaseResponseDTO<BillResponseDTO> createNewBill(BillRequestDTO billRequestDTO) {
-    Bill bill = billRepository.save(modelMapper.map(billRequestDTO, Bill.class));
-    BillResponseDTO billResponseDTO = modelMapper.map(bill, BillResponseDTO.class);
+    Prescription prescription = prescriptionRepository.findById(billRequestDTO.getPrescriptionId()).get();
+
+    Bill newBill = new Bill();
+    newBill.setTotalPrice(billRequestDTO.getTotalPrice());
+    newBill.setPrescription(prescription);
+
+    Bill bill = billRepository.save(newBill);
+
+    BillResponseDTO billResponseDTO = new BillResponseDTO();
+    billResponseDTO.setId(bill.getId());
+    billResponseDTO.setTotalPrice(bill.getTotalPrice());
+    billResponseDTO.setPrescription(modelMapper.map(prescription, PrescriptionResponseDTO.class));
+
     return new BaseResponseDTO<BillResponseDTO>(
             "201",
             HttpStatus.CREATED,
@@ -82,16 +99,25 @@ public class BillService implements IBillService {
 
   @Override
   public BaseResponseDTO<BillResponseDTO> updateBill(Integer id, BillRequestDTO billRequestDTO) {
-    Bill billUpdate = modelMapper.map(billRequestDTO, Bill.class);
-    billUpdate.setId(id);
+    Prescription prescription = prescriptionRepository.findById(billRequestDTO.getPrescriptionId()).get();
 
-    Bill bill = billRepository.save(billUpdate);
+    Bill newBill = new Bill();
+    newBill.setId(id);
+    newBill.setTotalPrice(billRequestDTO.getTotalPrice());
+    newBill.setPrescription(prescription);
+
+    Bill bill = billRepository.save(newBill);
+
+    BillResponseDTO billResponseDTO = new BillResponseDTO();
+    billResponseDTO.setId(bill.getId());
+    billResponseDTO.setTotalPrice(bill.getTotalPrice());
+    billResponseDTO.setPrescription(modelMapper.map(prescription, PrescriptionResponseDTO.class));
 
     return new BaseResponseDTO<BillResponseDTO>(
             "200",
             HttpStatus.OK,
             "successfully updating data",
-            modelMapper.map(bill, BillResponseDTO.class)
+            billResponseDTO
     );
   }
 
