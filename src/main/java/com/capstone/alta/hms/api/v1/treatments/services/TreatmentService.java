@@ -3,6 +3,8 @@ package com.capstone.alta.hms.api.v1.treatments.services;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
+import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
+import com.capstone.alta.hms.api.v1.diagnoses.repositories.DiagnoseRepository;
 import com.capstone.alta.hms.api.v1.treatments.dtos.TreatmentRequestDTO;
 import com.capstone.alta.hms.api.v1.treatments.dtos.TreatmentResponseDTO;
 import com.capstone.alta.hms.api.v1.treatments.entities.Treatment;
@@ -25,11 +27,19 @@ public class TreatmentService implements ITreatmentService {
     TreatmentRepository treatmentRepository;
 
     @Autowired
+    DiagnoseRepository diagnoseRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
     public BaseResponseDTO<TreatmentResponseDTO> createNewTreatment(TreatmentRequestDTO treatmentRequestDTO) {
-        Treatment treatment = treatmentRepository.save(modelMapper.map(treatmentRequestDTO, Treatment.class));
+        Diagnose diagnose = diagnoseRepository.findById(treatmentRequestDTO.getDiagnoseId()).get();
+        Treatment newTreatment = new Treatment();
+        newTreatment.setDiagnose(diagnose);
+        newTreatment.setReport(treatmentRequestDTO.getReport());
+        newTreatment.setStatus(treatmentRequestDTO.getStatus());
+        Treatment treatment = treatmentRepository.save(newTreatment);
         TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
 
         return new BaseResponseDTO<TreatmentResponseDTO>(
@@ -102,28 +112,21 @@ public class TreatmentService implements ITreatmentService {
 
     @Override
     public BaseResponseDTO<TreatmentResponseDTO> updateTreatment(Integer id, TreatmentRequestDTO treatmentRequestDTO) {
-        Treatment treatment = treatmentRepository.findById(id).orElse(null);
+        Diagnose diagnose = diagnoseRepository.findById(treatmentRequestDTO.getDiagnoseId()).get();
+        Treatment newTreatment = new Treatment();
+        newTreatment.setId(id);
+        newTreatment.setDiagnose(diagnose);
+        newTreatment.setReport(treatmentRequestDTO.getReport());
+        newTreatment.setStatus(treatmentRequestDTO.getStatus());
+        Treatment treatment = treatmentRepository.save(newTreatment);
+        TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
 
-        if(treatment != null) {
-            modelMapper.map(treatmentRequestDTO, treatment);
-            treatmentRepository.save(treatment);
-
-            TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
-
-            return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
-                    "successfully updating data",
-                    treatmentResponseDTO
-            );
-        } else {
-            return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
-                    "data not found",
-                    null
-            );
-        }
+        return new BaseResponseDTO<TreatmentResponseDTO>(
+                "200",
+                HttpStatus.OK,
+                "successfully updating data",
+                treatmentResponseDTO
+        );
     }
 
     @Override

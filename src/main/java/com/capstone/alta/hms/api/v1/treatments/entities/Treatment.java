@@ -1,6 +1,7 @@
 package com.capstone.alta.hms.api.v1.treatments.entities;
 
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
+import com.capstone.alta.hms.api.v1.treatments.utils.Status;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,7 +25,7 @@ public class Treatment {
     private String report;
 
     @Column(nullable = false, length = 15)
-    private String status;
+    private Status status;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -36,7 +37,7 @@ public class Treatment {
     @LastModifiedDate
     private Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnose_id")
     private Diagnose diagnose;
 }
