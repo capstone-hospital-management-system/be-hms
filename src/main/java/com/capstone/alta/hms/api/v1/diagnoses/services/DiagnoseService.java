@@ -1,5 +1,7 @@
 package com.capstone.alta.hms.api.v1.diagnoses.services;
 
+import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.appointments.repositories.AppointmentRespository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
@@ -25,18 +27,28 @@ public class DiagnoseService implements IDiagnoseService {
     DiagnoseRepository diagnoseRepository;
 
     @Autowired
+    AppointmentRespository appointmentRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> createDiagnose(DiagnoseRequestDTO diagnoseRequestDTO) {
-        Diagnose diagnose = diagnoseRepository.save(modelMapper.map(diagnoseRequestDTO, Diagnose.class));
-        DiagnoseResponseDTO diagnoseResponseDTO = modelMapper.map(diagnose, DiagnoseResponseDTO.class);
+        Appointment appointment = appointmentRepository.findById(diagnoseRequestDTO.getAppointmentId()).get();
+
+        Diagnose newDiagnose = new Diagnose();
+        newDiagnose.setAppointment(appointment);
+        newDiagnose.setName(diagnoseRequestDTO.getName());
+        newDiagnose.setDescription(diagnoseRequestDTO.getDescription());
+        newDiagnose.setReport(diagnoseRequestDTO.getReport());
+
+        Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
         return new BaseResponseDTO<DiagnoseResponseDTO>(
                 "201",
                 HttpStatus.CREATED,
-                "suscessfully creating data",
-                diagnoseResponseDTO
+                "successfully creating data",
+                modelMapper.map(diagnose, DiagnoseResponseDTO.class)
         );
     }
 
@@ -103,7 +115,7 @@ public class DiagnoseService implements IDiagnoseService {
     public BaseResponseDTO<DiagnoseResponseDTO> updateDiagnose(Integer id, DiagnoseRequestDTO diagnoseRequestDTO) {
         Diagnose diagnose = diagnoseRepository.findById(id).orElse(null);
 
-        if(diagnose != null) {
+        if (diagnose != null) {
             modelMapper.map(diagnoseRequestDTO, diagnose);
             diagnoseRepository.save(diagnose);
 
