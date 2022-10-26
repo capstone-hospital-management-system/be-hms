@@ -47,4 +47,18 @@ public class Medicine {
 
     @ManyToMany(mappedBy = "medicines")
     private List<Prescription> prescriptions = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Medicine{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", prescriptions=" + prescriptions +
+                '}';
+    }
 }

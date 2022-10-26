@@ -3,6 +3,11 @@ package com.capstone.alta.hms.api.v1.prescriptions.services;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
+import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
+import com.capstone.alta.hms.api.v1.diagnoses.repositories.DiagnoseRepository;
+import com.capstone.alta.hms.api.v1.medicines.dtos.MedicineResponseDTO;
+import com.capstone.alta.hms.api.v1.medicines.entities.Medicine;
+import com.capstone.alta.hms.api.v1.medicines.repositories.MedicineRepository;
 import com.capstone.alta.hms.api.v1.prescriptions.dtos.PrescriptionRequestDTO;
 import com.capstone.alta.hms.api.v1.prescriptions.dtos.PrescriptionResponseDTO;
 import com.capstone.alta.hms.api.v1.prescriptions.entities.Prescription;
@@ -14,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,17 +31,45 @@ public class PrescriptionService implements IPrescriptionService {
   PrescriptionRepository prescriptionRepository;
 
   @Autowired
+  DiagnoseRepository diagnoseRepository;
+
+  @Autowired
+  MedicineRepository medicineRepository;
+
+  @Autowired
   ModelMapper modelMapper;
 
   @Override
   public BaseResponseDTO<PrescriptionResponseDTO> createNewPrescription(PrescriptionRequestDTO prescriptionRequestDTO) {
-    Prescription prescription = prescriptionRepository.save(modelMapper.map(prescriptionRequestDTO, Prescription.class));
-    PrescriptionResponseDTO prescriptionResponseDTO = modelMapper.map(prescription, PrescriptionResponseDTO.class);
+    Diagnose diagnose = diagnoseRepository.findById(prescriptionRequestDTO.getDiagnoseId()).get();
+    List<Medicine> medicines = medicineRepository.findByIdIn(prescriptionRequestDTO.getMedicineIds());
+
+    Prescription newPrescription = new Prescription();
+    newPrescription.setDiagnose(diagnose);
+    newPrescription.setDescription(prescriptionRequestDTO.getDescription());
+    newPrescription.setStatus(prescriptionRequestDTO.getStatus());
+    newPrescription.setOthers(prescriptionRequestDTO.getOthers());
+    newPrescription.setMedicines(medicines);
+
+    Prescription prescription = prescriptionRepository.save(newPrescription);
+    PrescriptionResponseDTO response = new PrescriptionResponseDTO();
+    response.setId(prescription.getId());
+    response.setDiagnoseId(prescription.getDiagnose().getId());
+    response.setDescription(prescription.getDescription());
+    response.setStatus(prescription.getStatus());
+    response.setOthers(prescription.getOthers());
+
+    List<MedicineResponseDTO> medicineResponseDTOS = newPrescription.getMedicines()
+            .stream()
+            .map(medicine -> modelMapper.map(medicine, MedicineResponseDTO.class)).toList();
+
+    response.setMedicines(medicineResponseDTOS);
+
     return new BaseResponseDTO<PrescriptionResponseDTO>(
             "201",
             HttpStatus.CREATED,
             "successfully creating data",
-            prescriptionResponseDTO
+            response
     );
   }
 
@@ -82,16 +117,36 @@ public class PrescriptionService implements IPrescriptionService {
 
   @Override
   public BaseResponseDTO<PrescriptionResponseDTO> updatePrescription(Integer id, PrescriptionRequestDTO prescriptionRequestDTO) {
-    Prescription prescriptionUpdate = modelMapper.map(prescriptionRequestDTO, Prescription.class);
-    prescriptionUpdate.setId(id);
+    Diagnose diagnose = diagnoseRepository.findById(prescriptionRequestDTO.getDiagnoseId()).get();
+    List<Medicine> medicines = medicineRepository.findByIdIn(prescriptionRequestDTO.getMedicineIds());
 
-    Prescription prescription = prescriptionRepository.save(prescriptionUpdate);
+    Prescription newPrescription = new Prescription();
+    newPrescription.setId(id);
+    newPrescription.setDiagnose(diagnose);
+    newPrescription.setDescription(prescriptionRequestDTO.getDescription());
+    newPrescription.setStatus(prescriptionRequestDTO.getStatus());
+    newPrescription.setOthers(prescriptionRequestDTO.getOthers());
+    newPrescription.setMedicines(medicines);
+
+    Prescription prescription = prescriptionRepository.save(newPrescription);
+    PrescriptionResponseDTO response = new PrescriptionResponseDTO();
+    response.setId(prescription.getId());
+    response.setDiagnoseId(prescription.getDiagnose().getId());
+    response.setDescription(prescription.getDescription());
+    response.setStatus(prescription.getStatus());
+    response.setOthers(prescription.getOthers());
+
+    List<MedicineResponseDTO> medicineResponseDTOS = newPrescription.getMedicines()
+            .stream()
+            .map(medicine -> modelMapper.map(medicine, MedicineResponseDTO.class)).toList();
+
+    response.setMedicines(medicineResponseDTOS);
 
     return new BaseResponseDTO<PrescriptionResponseDTO>(
             "200",
             HttpStatus.OK,
             "successfully updating data",
-            modelMapper.map(prescription, PrescriptionResponseDTO.class)
+            response
     );
   }
 

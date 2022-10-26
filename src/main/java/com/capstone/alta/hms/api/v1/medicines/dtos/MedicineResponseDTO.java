@@ -14,4 +14,15 @@ public class MedicineResponseDTO implements Serializable {
   private String description;
   private BigDecimal price;
   private short stock;
+
+  @Override
+  public String toString() {
+    return "MedicineResponseDTO{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", price=" + price +
+            ", stock=" + stock +
+            '}';
+  }
 }
