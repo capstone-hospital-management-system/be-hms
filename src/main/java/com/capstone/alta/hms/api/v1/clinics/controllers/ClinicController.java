@@ -43,12 +43,12 @@ public class ClinicController {
             @PathVariable Integer id) {
         BaseResponseDTO<ClinicResponseDTO> response =
             clinicService.getClinicDetails(id);
-//        if (response.getData() == null) {
-//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        if (response.getData() == null) {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 
     @PutMapping("/clinics/{id}")
@@ -58,14 +58,21 @@ public class ClinicController {
         BaseResponseDTO<ClinicResponseDTO> response =
                 clinicService.updateClinic(id, clinicRequestDTO);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (response.getData() == null) {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("/clinics/{id}")
     public ResponseEntity<BaseResponseDTO<ClinicResponseDTO>> deleteClinic(@PathVariable Integer id) {
         BaseResponseDTO<ClinicResponseDTO> response = clinicService.deleteClinic(id);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (response.getData() == null) {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 
 }
