@@ -17,11 +17,11 @@ public class AuthenticationResponseDTO<T> implements Serializable {
     @JsonProperty("token_type")
     private String tokenType = "Bearer";
 
-    @JsonProperty("user_principal")
-    private T userPrincipal;
+    @JsonProperty("account_info")
+    private T accountInfo;
 
-    public AuthenticationResponseDTO(String accessToken, T userPrincipal) {
+    public AuthenticationResponseDTO(String accessToken, T accountInfo) {
         this.accessToken = accessToken;
-        this.userPrincipal = userPrincipal;
+        this.accountInfo = accountInfo;
     }
 }

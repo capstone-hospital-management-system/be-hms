@@ -46,7 +46,8 @@ public class AuthenticationService implements IAuthenticationService {
             "200",
             HttpStatus.OK,
             "success",
-            new AuthenticationResponseDTO(jwt, authentication)
+            new AuthenticationResponseDTO(jwt, authentication.getPrincipal())
         );
     }
+
 }
