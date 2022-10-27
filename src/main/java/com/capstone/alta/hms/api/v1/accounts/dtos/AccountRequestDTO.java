@@ -31,11 +31,6 @@ public class AccountRequestDTO implements Serializable {
     private String password;
 
     @NotNull
-    @JsonProperty("register_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date registerDate;
-
-    @NotNull
     private Role role;
 
     @NotNull

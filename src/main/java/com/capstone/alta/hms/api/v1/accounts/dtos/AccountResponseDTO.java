@@ -25,9 +25,6 @@ public class AccountResponseDTO implements Serializable {
 
     private String email;
 
-    @JsonProperty("register_date")
-    private Date registerDate;
-
     private Role role;
 
     @JsonProperty("id_card")
