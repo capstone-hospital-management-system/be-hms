@@ -37,9 +37,6 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private Date registerDate;
-
     @Column(nullable = false, length = 100)
     private Role role;
 
