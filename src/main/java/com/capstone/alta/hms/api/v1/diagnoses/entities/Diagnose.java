@@ -41,7 +41,7 @@ public class Diagnose {
     @LastModifiedDate
     private Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

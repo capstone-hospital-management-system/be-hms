@@ -1,5 +1,7 @@
 package com.capstone.alta.hms.api.v1.diagnoses.services;
 
+import com.capstone.alta.hms.api.v1.appointments.entities.Appointment;
+import com.capstone.alta.hms.api.v1.appointments.repositories.AppointmentRespository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
@@ -25,18 +27,28 @@ public class DiagnoseService implements IDiagnoseService {
     DiagnoseRepository diagnoseRepository;
 
     @Autowired
+    AppointmentRespository appointmentRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> createDiagnose(DiagnoseRequestDTO diagnoseRequestDTO) {
-        Diagnose diagnose = diagnoseRepository.save(modelMapper.map(diagnoseRequestDTO, Diagnose.class));
-        DiagnoseResponseDTO diagnoseResponseDTO = modelMapper.map(diagnose, DiagnoseResponseDTO.class);
+        Appointment appointment = appointmentRepository.findById(diagnoseRequestDTO.getAppointmentId()).get();
+
+        Diagnose newDiagnose = new Diagnose();
+        newDiagnose.setAppointment(appointment);
+        newDiagnose.setName(diagnoseRequestDTO.getName());
+        newDiagnose.setDescription(diagnoseRequestDTO.getDescription());
+        newDiagnose.setReport(diagnoseRequestDTO.getReport());
+
+        Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
         return new BaseResponseDTO<DiagnoseResponseDTO>(
                 "201",
                 HttpStatus.CREATED,
-                "suscessfully creating data",
-                diagnoseResponseDTO
+                "successfully creating data",
+                modelMapper.map(diagnose, DiagnoseResponseDTO.class)
         );
     }
 
@@ -101,49 +113,35 @@ public class DiagnoseService implements IDiagnoseService {
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> updateDiagnose(Integer id, DiagnoseRequestDTO diagnoseRequestDTO) {
-        Diagnose diagnose = diagnoseRepository.findById(id).orElse(null);
+        Appointment appointment = appointmentRepository.findById(diagnoseRequestDTO.getAppointmentId()).get();
 
-        if(diagnose != null) {
-            modelMapper.map(diagnoseRequestDTO, diagnose);
-            diagnoseRepository.save(diagnose);
+        Diagnose newDiagnose = new Diagnose();
+        newDiagnose.setId(id);
+        newDiagnose.setAppointment(appointment);
+        newDiagnose.setName(diagnoseRequestDTO.getName());
+        newDiagnose.setDescription(diagnoseRequestDTO.getDescription());
+        newDiagnose.setReport(diagnoseRequestDTO.getReport());
 
-            DiagnoseResponseDTO diagnoseResponseDTO = modelMapper.map(diagnose, DiagnoseResponseDTO.class);
+        Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
-            return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
-                    "successfully updating data",
-                    diagnoseResponseDTO
-            );
-        } else {
-            return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
-                    "data not found",
-                    null
-            );
-        }
+        return new BaseResponseDTO<DiagnoseResponseDTO>(
+                "200",
+                HttpStatus.OK,
+                "successfully updating data",
+                modelMapper.map(diagnose, DiagnoseResponseDTO.class)
+        );
     }
 
     @Override
     public BaseResponseDTO<DiagnoseResponseDTO> deleteDiagnose(Integer id) {
-        Diagnose diagnose = diagnoseRepository.findById(id).orElse(null);
 
-        if(diagnose != null) {
-            diagnoseRepository.delete(diagnose);
-            return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
-                    "successfully deleting data",
-                    null
-            );
-        } else {
-            return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
-                    "data not found",
-                    null
-            );
-        }
+        diagnoseRepository.deleteById(id);
+
+        return new BaseResponseDTO<>(
+                "200",
+                HttpStatus.OK,
+                "successfully deleting data",
+                null
+        );
     }
 }

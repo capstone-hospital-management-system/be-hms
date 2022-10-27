@@ -53,7 +53,7 @@ public class Prescription {
     @OneToOne(mappedBy = "prescription")
     private Bill bill;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
         name = "prescriptions_medicines",
         joinColumns = @JoinColumn(name = "prescription_id"),
