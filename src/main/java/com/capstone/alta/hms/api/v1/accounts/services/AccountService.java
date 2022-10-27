@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,14 +28,17 @@ public class AccountService implements IAccountService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public BaseResponseDTO<AccountResponseDTO> createNewAccount(
         AccountRequestDTO accountRequestDTO) {
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Account account = accountRepository.save(
-            modelMapper.map(accountRequestDTO, Account.class)
-        );
+        Account newAccount = modelMapper.map(accountRequestDTO, Account.class);
+        newAccount.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
+        Account account = accountRepository.save(newAccount);
 
         AccountResponseDTO accountResponseDTO = modelMapper.map(
             account, AccountResponseDTO.class);
