@@ -35,19 +35,24 @@ public class AccountService implements IAccountService {
     public BaseResponseDTO<AccountResponseDTO> createNewAccount(
         AccountRequestDTO accountRequestDTO) {
 
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Account newAccount = modelMapper.map(accountRequestDTO, Account.class);
+        Account newAccount = new Account();
+        newAccount.setFirstName(accountRequestDTO.getFirstName());
+        newAccount.setLastName(accountRequestDTO.getLastName());
+        newAccount.setUsername(accountRequestDTO.getUsername());
+        newAccount.setEmail(accountRequestDTO.getEmail());
+        newAccount.setEmail(accountRequestDTO.getEmail());
         newAccount.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
-        Account account = accountRepository.save(newAccount);
+        newAccount.setRole(accountRequestDTO.getRole());
+        newAccount.setIdCard(accountRequestDTO.getIdCard());
+        newAccount.setPhoneNumber(accountRequestDTO.getPhoneNumber());
 
-        AccountResponseDTO accountResponseDTO = modelMapper.map(
-            account, AccountResponseDTO.class);
+        Account account = accountRepository.save(newAccount);
 
         return new BaseResponseDTO<AccountResponseDTO>(
             "201",
             HttpStatus.CREATED,
             "successfully creating data",
-            accountResponseDTO
+            modelMapper.map(account, AccountResponseDTO.class)
         );
     }
 
