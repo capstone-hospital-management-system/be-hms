@@ -1,6 +1,6 @@
 package com.capstone.alta.hms.api.v1.diagnoses.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.capstone.alta.hms.api.v1.appointments.dtos.AppointmentResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +13,5 @@ public class DiagnoseResponseDTO implements Serializable {
     private String name;
     private String description;
     private String report;
-    @JsonProperty("appointment_id")
-    private int appointmentId;
+    private AppointmentResponseDTO appointment;
 }
