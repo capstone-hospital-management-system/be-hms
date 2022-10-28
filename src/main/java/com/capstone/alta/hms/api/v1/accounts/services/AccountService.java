@@ -106,16 +106,25 @@ public class AccountService implements IAccountService {
 
     @Override
     public BaseResponseDTO<AccountResponseDTO> updateAccount(Integer id, AccountRequestDTO accountRequestDTO) {
-        Account accountUpdate = modelMapper.map(accountRequestDTO, Account.class);
-        accountUpdate.setId(id);
+        Account updateAccount = new Account();
+        updateAccount.setId(id);
+        updateAccount.setFirstName(accountRequestDTO.getFirstName());
+        updateAccount.setLastName(accountRequestDTO.getLastName());
+        updateAccount.setUsername(accountRequestDTO.getUsername());
+        updateAccount.setEmail(accountRequestDTO.getEmail());
+        updateAccount.setEmail(accountRequestDTO.getEmail());
+        updateAccount.setPassword(passwordEncoder.encode(accountRequestDTO.getPassword()));
+        updateAccount.setRole(accountRequestDTO.getRole());
+        updateAccount.setIdCard(accountRequestDTO.getIdCard());
+        updateAccount.setPhoneNumber(accountRequestDTO.getPhoneNumber());
 
-        Account account = accountRepository.save(accountUpdate);
+        Account updatedAccount = accountRepository.save(updateAccount);
 
         return new BaseResponseDTO<>(
             "200",
             HttpStatus.OK,
             "successfully updating data",
-            modelMapper.map(account, AccountResponseDTO.class)
+            modelMapper.map(updatedAccount, AccountResponseDTO.class)
         );
     }
 
