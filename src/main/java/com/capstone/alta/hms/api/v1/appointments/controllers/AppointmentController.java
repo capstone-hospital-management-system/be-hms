@@ -60,4 +60,14 @@ public class AppointmentController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/appointments/{id}")
+    public ResponseEntity<BaseResponseDTO<AppointmentResponseDTO>> deleteAppointment(
+            @PathVariable Integer id) {
+
+        BaseResponseDTO<AppointmentResponseDTO> response =
+                appointmentService.deleteAppointment(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
