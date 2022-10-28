@@ -2,6 +2,7 @@ package com.capstone.alta.hms.api.v1.appointments.dtos;
 
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
 import com.capstone.alta.hms.api.v1.accounts.entities.Account;
+import com.capstone.alta.hms.api.v1.clinics.dtos.ClinicResponseDTO;
 import com.capstone.alta.hms.api.v1.clinics.entities.Clinic;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
@@ -22,7 +23,7 @@ public class AppointmentResponseDTO implements Serializable {
     private Integer id;
 
     @JsonProperty("appointment_date")
-    private LocalDateTime appointmentDate;
+    private Date appointmentDate;
 
     @JsonProperty("created_at")
     private Date createdAt;
@@ -37,5 +38,5 @@ public class AppointmentResponseDTO implements Serializable {
     private AccountResponseDTO doctor;
 
     @NotNull
-    private Clinic clinic;
+    private ClinicResponseDTO clinic;
 }
