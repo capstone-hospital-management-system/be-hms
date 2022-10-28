@@ -3,6 +3,7 @@ package com.capstone.alta.hms.api.v1.prescriptions.services;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
+import com.capstone.alta.hms.api.v1.diagnoses.dtos.DiagnoseResponseDTO;
 import com.capstone.alta.hms.api.v1.diagnoses.entities.Diagnose;
 import com.capstone.alta.hms.api.v1.diagnoses.repositories.DiagnoseRepository;
 import com.capstone.alta.hms.api.v1.medicines.dtos.MedicineResponseDTO;
@@ -54,7 +55,7 @@ public class PrescriptionService implements IPrescriptionService {
     Prescription prescription = prescriptionRepository.save(newPrescription);
     PrescriptionResponseDTO response = new PrescriptionResponseDTO();
     response.setId(prescription.getId());
-    response.setDiagnoseId(prescription.getDiagnose().getId());
+    response.setDiagnose(modelMapper.map(prescription.getDiagnose(), DiagnoseResponseDTO.class));
     response.setDescription(prescription.getDescription());
     response.setStatus(prescription.getStatus());
     response.setOthers(prescription.getOthers());
@@ -131,7 +132,7 @@ public class PrescriptionService implements IPrescriptionService {
     Prescription prescription = prescriptionRepository.save(newPrescription);
     PrescriptionResponseDTO response = new PrescriptionResponseDTO();
     response.setId(prescription.getId());
-    response.setDiagnoseId(prescription.getDiagnose().getId());
+    response.setDiagnose(modelMapper.map(prescription.getDiagnose(), DiagnoseResponseDTO.class));
     response.setDescription(prescription.getDescription());
     response.setStatus(prescription.getStatus());
     response.setOthers(prescription.getOthers());
