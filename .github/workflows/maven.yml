@@ -1,6 +1,11 @@
 name: HMS Capstone Project CI/CD
 
-on: [push]
+on:
+  push:
+    branches: [staging]
+
+env:
+  APPLICATION_ENVIRONMENT: ${{ secrets.APPLICATION_ENVIRONMENT }}
 
 jobs:
   build:
