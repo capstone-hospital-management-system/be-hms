@@ -25,8 +25,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDateTime appointmentDate;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date appointmentDate;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

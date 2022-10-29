@@ -3,6 +3,7 @@ package com.capstone.alta.hms.api.v1.accounts.controllers;
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountRequestDTO;
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
 import com.capstone.alta.hms.api.v1.accounts.services.IAccountService;
+import com.capstone.alta.hms.api.v1.accounts.utils.Role;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,16 @@ public class AccountController {
     @DeleteMapping("/accounts/{id}")
     public ResponseEntity<BaseResponseDTO<AccountResponseDTO>> deleteAccount(@PathVariable Integer id) {
         BaseResponseDTO response = accountService.deleteAccount(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/accounts", params = {"role"})
+    public ResponseEntity<BaseResponseDTO<List<AccountResponseDTO>>> getAccountsByRole(
+            @RequestParam String role
+            ) {
+        BaseResponseDTO<List<AccountResponseDTO>> response =
+                accountService.getAccountsByRole(role.toUpperCase());
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

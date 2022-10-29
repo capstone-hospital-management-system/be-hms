@@ -24,7 +24,7 @@ public class AppointmentRequestDTO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("appointment_date")
     @NotNull
-    private LocalDateTime appointmentDate;
+    private Date appointmentDate;
 
     @JsonProperty("created_at")
     @JsonIgnore

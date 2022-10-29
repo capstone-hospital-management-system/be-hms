@@ -10,6 +10,8 @@ import com.capstone.alta.hms.api.v1.patients.dtos.PatientRequestDTO;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.capstone.alta.hms.api.v1.patients.repositories.PatientRepository;
+import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
+import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -18,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -109,18 +114,30 @@ public class PatientService implements IPatientService {
         Integer id,
         PatientRequestDTO patientRequestDTO) {
 
-        Account registrarAccount = patientRepository.findById(id).get().getRegisterBy();
-        Patient patientUpdate = modelMapper.map(patientRequestDTO, Patient.class);
-        patientUpdate.setId(id);
-        patientUpdate.setRegisterBy(registrarAccount);
+        Patient updatePatient = new Patient();
+        updatePatient.setId(id);
+        updatePatient.setRegisterBy(patientRequestDTO.getRegisterBy());
+        updatePatient.setUpdatedBy(patientRequestDTO.getUpdatedBy());
+        updatePatient.setFirstName(patientRequestDTO.getFirstName());
+        updatePatient.setLastName(patientRequestDTO.getLastName());
+        updatePatient.setIdCard(patientRequestDTO.getIdCard());
+        updatePatient.setAge(patientRequestDTO.getAge());
+        updatePatient.setGender(patientRequestDTO.getGender());
+        updatePatient.setAddress(patientRequestDTO.getAddress());
+        updatePatient.setCity(patientRequestDTO.getCity());
+        updatePatient.setBloodType(patientRequestDTO.getBloodType());
+        updatePatient.setPhoneNumber(patientRequestDTO.getPhoneNumber());
+        updatePatient.setPostalCode(patientRequestDTO.getPostalCode());
+        updatePatient.setUsername(patientRequestDTO.getUsername());
+        updatePatient.setBod(patientRequestDTO.getBod());
 
-        Patient patient = patientRepository.save(patientUpdate);
+        Patient updatedPatient = patientRepository.save(updatePatient);
 
         return new BaseResponseDTO<>(
                 "200",
                 HttpStatus.OK,
                 "successfully updating data",
-                modelMapper.map(patient, PatientResponseDTO.class)
+                modelMapper.map(updatedPatient, PatientResponseDTO.class)
         );
     }
 
