@@ -1,4 +1,4 @@
-package com.capstone.alta.hms.api.v1.accounts.services;
+package com.capstone.alta.hms.api.v1.patients.services;
 
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountRequestDTO;
 import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
