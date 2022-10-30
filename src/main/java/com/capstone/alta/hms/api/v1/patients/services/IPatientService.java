@@ -8,6 +8,7 @@ import com.capstone.alta.hms.api.v1.patients.dtos.PatientRequestDTO;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import org.springframework.data.domain.Pageable;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public interface IPatientService {
@@ -16,4 +17,5 @@ public interface IPatientService {
     BaseResponseDTO<PatientResponseDTO> getPatientDetails(Integer id);
     BaseResponseDTO<PatientResponseDTO> updatePatient(Integer id, PatientRequestDTO patientRequestDTO);
     BaseResponseDTO<PatientResponseDTO> deletePatient(Integer id);
+    ByteArrayInputStream downloadExcel();
 }
