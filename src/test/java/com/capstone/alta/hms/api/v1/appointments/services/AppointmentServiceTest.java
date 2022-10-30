@@ -15,6 +15,7 @@ import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.capstone.alta.hms.api.v1.patients.repositories.PatientRepository;
 import com.capstone.alta.hms.api.v1.patients.services.PatientService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -54,11 +55,12 @@ public class AppointmentServiceTest {
     @InjectMocks
     AppointmentService appointmentService = spy(new AppointmentService());
 
-    @BeforeEach
-    void setup() {
+    @Before
+    public void setup() {
         MockitoAnnotations.openMocks(this);
-        when(accountRepository.findById(1)).thenReturn(Optional.of(doctor()));
-        when(clinicRepository.findById(1)).thenReturn(Optional.of(clinic()));
+        when(patientRepository.findById(any(Integer.class))).thenReturn(Optional.of(patient()));
+        when(accountRepository.findById(any(Integer.class))).thenReturn(Optional.of(doctor()));
+        when(clinicRepository.findById(any(Integer.class))).thenReturn(Optional.of(clinic()));
     }
 
 
@@ -70,11 +72,10 @@ public class AppointmentServiceTest {
 
         Appointment appointment = appointmentEntity();
 
-        when(patientRepository.findById(any(Integer.class))).thenReturn(Optional.of(patient));
 
         when(appointmentRespository.save(any(Appointment.class))).thenReturn(appointment);
 
-        AppointmentResponseDTO appointmentResponseDTO = new AppointmentResponseDTO();
+        AppointmentResponseDTO appointmentResponseDTO = modelMapper.map(appointmentEntity(), AppointmentResponseDTO.class);
         appointmentResponseDTO.setAppointmentDate(appointment.getAppointmentDate());
         appointmentResponseDTO.setDoctor(modelMapper.map(doctor(), AccountResponseDTO.class));
         appointmentResponseDTO.setClinic(modelMapper.map(clinic(), ClinicResponseDTO.class));
@@ -95,14 +96,14 @@ public class AppointmentServiceTest {
         return patient;
     }
 
-    private Account doctor() {
+    public Account doctor() {
         Account doctor = new Account();
         doctor.setId(1);
         return doctor;
     }
 
 
-    private Clinic clinic() {
+    public Clinic clinic() {
         Clinic clinic = new Clinic();
         clinic.setId(1);
         return clinic;
