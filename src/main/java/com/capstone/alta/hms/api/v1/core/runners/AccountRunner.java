@@ -41,8 +41,8 @@ public class AccountRunner implements CommandLineRunner {
         if (accountRepository.findAll().isEmpty()) {
             AccountRequestDTO newAccount = new AccountRequestDTO();
 
-            newAccount.setFirstName("administrator");
-            newAccount.setLastName("administrator");
+            newAccount.setFirstName("super");
+            newAccount.setLastName("admin");
             newAccount.setUsername(username);
             newAccount.setEmail(email);
             newAccount.setPassword(passwordEncoder.encode(password));
