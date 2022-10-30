@@ -39,10 +39,6 @@ public class Clinic {
     @LastModifiedDate
     private Date updatedAt;
 
-    @OneToMany(
-        mappedBy = "clinic",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "clinic")
     private List<Appointment> appointments = new ArrayList<>();
 }

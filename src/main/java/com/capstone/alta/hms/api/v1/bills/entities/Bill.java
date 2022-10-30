@@ -34,7 +34,7 @@ public class Bill {
     @LastModifiedDate
     private Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "prescription_id")
     private Prescription prescription;
 }
