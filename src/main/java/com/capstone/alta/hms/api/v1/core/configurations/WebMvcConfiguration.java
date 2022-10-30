@@ -19,7 +19,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOrigins("https://fe-hms.vercel.app")
+            .allowedOrigins(allowedOrigins)
             .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
             .maxAge(MAX_AGE)
             .allowedOriginPatterns("*");
