@@ -1,7 +1,5 @@
 package com.capstone.alta.hms.api.v1.patients.services;
 
-import com.capstone.alta.hms.api.v1.accounts.dtos.AccountResponseDTO;
-import com.capstone.alta.hms.api.v1.accounts.entities.Account;
 import com.capstone.alta.hms.api.v1.accounts.repositories.AccountRepository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
 import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
@@ -10,24 +8,18 @@ import com.capstone.alta.hms.api.v1.patients.dtos.PatientRequestDTO;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.capstone.alta.hms.api.v1.patients.repositories.PatientRepository;
-import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
-import com.capstone.alta.hms.api.v1.patients.utils.Gender;
-import org.modelmapper.Condition;
-import org.modelmapper.Conditions;
+import com.capstone.alta.hms.api.v1.websocket.dto.MessageDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,17 +33,22 @@ public class PatientService implements IPatientService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
+
     @Override
-    public BaseResponseDTO<PatientResponseDTO> createNewPatient(
-        PatientRequestDTO patientRequestDTO) {
-
+    public BaseResponseDTO<PatientResponseDTO> createNewPatient(PatientRequestDTO patientRequestDTO) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Patient patient = patientRepository.save(
-            modelMapper.map(patientRequestDTO, Patient.class)
-        );
+        Patient patient = patientRepository.save(modelMapper.map(patientRequestDTO, Patient.class));
 
-        PatientResponseDTO patientResponseDTO = modelMapper.map(
-            patient, PatientResponseDTO.class);
+        PatientResponseDTO patientResponseDTO = modelMapper.map(patient, PatientResponseDTO.class);
+
+        MessageDTO message = new MessageDTO();
+        message.setType("message");
+        message.setTitle("NEW PATIENT: " + patientResponseDTO.getFirstName() + " " + patientResponseDTO.getLastName());
+        message.setDescription(patientResponseDTO.getGender() + " - " + patientResponseDTO.getAge() + " y.o");
+
+        messagingTemplate.convertAndSend("/topic/messages", message);
 
         return new BaseResponseDTO<>(
             "201",
@@ -110,10 +107,7 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public BaseResponseDTO<PatientResponseDTO> updatePatient(
-        Integer id,
-        PatientRequestDTO patientRequestDTO) {
-
+    public BaseResponseDTO<PatientResponseDTO> updatePatient(Integer id, PatientRequestDTO patientRequestDTO) {
         Patient updatePatient = new Patient();
         updatePatient.setId(id);
         updatePatient.setRegisterBy(patientRequestDTO.getRegisterBy());
