@@ -11,4 +11,6 @@ import java.util.List;
 public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
   Page<Medicine> findAll(Pageable pageable);
   List<Medicine> findByIdIn(Collection<Integer> ids);
+
+  List<Medicine> findByStockLessThan(Short id);
 }
