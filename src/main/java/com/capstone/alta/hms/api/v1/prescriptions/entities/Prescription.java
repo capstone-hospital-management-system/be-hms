@@ -46,7 +46,7 @@ public class Prescription {
     private Date updatedAt;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "diagnose_id")
     private Diagnose diagnose;
 

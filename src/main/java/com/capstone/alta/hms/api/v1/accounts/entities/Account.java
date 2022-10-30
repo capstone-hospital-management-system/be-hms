@@ -60,7 +60,6 @@ public class Account {
 
     @OneToMany(
         mappedBy = "doctor",
-        cascade = CascadeType.ALL,
         orphanRemoval = true
     )
     private List<Appointment> appointments = new ArrayList<>();

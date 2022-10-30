@@ -24,8 +24,4 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
             .maxAge(MAX_AGE)
             .allowedOriginPatterns("*");
     }
-
-
-
-
 }

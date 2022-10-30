@@ -81,10 +81,6 @@ public class Patient {
     @JoinColumn(name = "updated_by")
     private Account updatedBy;
 
-    @OneToMany(
-        mappedBy = "patient",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
 }

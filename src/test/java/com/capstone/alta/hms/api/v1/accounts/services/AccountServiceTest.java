@@ -40,9 +40,6 @@ public class AccountServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
-    @Mock
-    EntityManager em;
-
     @InjectMocks
     AccountService accountService = spy(new AccountService());
 
