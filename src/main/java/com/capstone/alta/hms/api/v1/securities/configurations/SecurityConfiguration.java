@@ -92,7 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://fe-hms.vercel.app", "http://localhost:4200", "http://localhost:4200/","http://localhost"));
+        configuration.setAllowedOrigins(Arrays.asList("https://fe-hms.vercel.app", "https://fe-hms.vercel.app/", "http://localhost:4200", "http://localhost:4200/","http://localhost"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.applyPermitDefaultValues();
         configuration.setAllowedHeaders(Arrays.asList("*"));
