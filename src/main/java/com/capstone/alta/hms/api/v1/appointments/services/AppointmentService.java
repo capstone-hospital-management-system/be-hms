@@ -52,15 +52,12 @@ public class AppointmentService implements IAppointmentService{
         Patient patient = patientRepository.findById(appointmentRequestDTO.getPatientId()).get();
         Account doctor = accountRepository.findById(appointmentRequestDTO.getDoctorId()).get();
         Clinic clinic = clinicRepository.findById(appointmentRequestDTO.getClinicId()).get();
-        Account created_by = accountRepository.findById(appointmentRequestDTO.getCreatedBy()).get();
 
         Appointment newAppointment = new Appointment();
         newAppointment.setAppointmentDate(appointmentRequestDTO.getAppointmentDate());
         newAppointment.setPatient(patient);
         newAppointment.setDoctor(doctor);
         newAppointment.setClinic(clinic);
-        newAppointment.setCreatedBy(created_by);
-        newAppointment.setUpdatedBy(created_by);
 
         Appointment appointment = appointmentRespository.save(newAppointment);
 
@@ -133,7 +130,6 @@ public class AppointmentService implements IAppointmentService{
         Patient patient = patientRepository.findById(appointmentRequestDTO.getPatientId()).get();
         Account doctor = accountRepository.findById(appointmentRequestDTO.getDoctorId()).get();
         Clinic clinic = clinicRepository.findById(appointmentRequestDTO.getClinicId()).get();
-        Account created_by = accountRepository.findById(appointmentRequestDTO.getCreatedBy()).get();
 
         Appointment updateAppointment = new Appointment();
         updateAppointment.setId(id);
@@ -141,8 +137,6 @@ public class AppointmentService implements IAppointmentService{
         updateAppointment.setPatient(patient);
         updateAppointment.setDoctor(doctor);
         updateAppointment.setClinic(clinic);
-        updateAppointment.setCreatedBy(created_by);
-        updateAppointment.setUpdatedBy(created_by);
 
         Appointment updatedAppointment = appointmentRespository.save(updateAppointment);
 
