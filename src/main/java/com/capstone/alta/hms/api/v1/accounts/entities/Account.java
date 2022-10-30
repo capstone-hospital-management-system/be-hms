@@ -64,18 +64,4 @@ public class Account {
         orphanRemoval = true
     )
     private List<Appointment> appointments = new ArrayList<>();
-
-    @OneToMany(
-            mappedBy = "createdBy",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Appointment> appointmentsCreated = new ArrayList<>();
-
-    @OneToMany(
-            mappedBy = "updatedBy",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Appointment> appointmentsUpdated = new ArrayList<>();
 }
