@@ -45,7 +45,7 @@ public class Medicine {
     @LastModifiedDate
     private Date updatedAt;
 
-    @ManyToMany(mappedBy = "medicines")
+    @ManyToMany(mappedBy = "medicines", fetch = FetchType.EAGER)
     private List<Prescription> prescriptions = new ArrayList<>();
 
     @Override
