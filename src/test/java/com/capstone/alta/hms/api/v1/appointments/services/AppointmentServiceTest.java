@@ -81,8 +81,8 @@ public class AppointmentServiceTest {
         appointmentResponseDTO.setClinic(modelMapper.map(clinic(), ClinicResponseDTO.class));
         appointmentResponseDTO.setPatient(modelMapper.map(patient(), PatientResponseDTO.class));
 
-        BaseResponseDTO<AppointmentResponseDTO> expected = new BaseResponseDTO("201", HttpStatus.CREATED,
-                "successfully creating data", appointmentResponseDTO);
+        BaseResponseDTO<AppointmentResponseDTO> expected = new BaseResponseDTO("successfully creating data",
+                appointmentResponseDTO);
 
         BaseResponseDTO<AppointmentResponseDTO> actual = appointmentService.createNewAppointment(appointmentRequestDTO());
 
