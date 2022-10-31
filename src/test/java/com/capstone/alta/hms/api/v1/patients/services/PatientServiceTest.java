@@ -27,6 +27,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,9 @@ public class PatientServiceTest {
     @InjectMocks
     PatientService patientService = spy(new PatientService());
 
+    @Mock
+    SimpMessageSendingOperations messagingTemplate;
+
     ModelMapper modelMapper = spy(new ModelMapper());
 
     @BeforeEach
@@ -64,8 +68,8 @@ public class PatientServiceTest {
 
         PatientResponseDTO patientResponseDTO = modelMapper.map(patient, PatientResponseDTO.class);
 
-        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO("201", HttpStatus.CREATED,
-                "successfully creating data", patientResponseDTO);
+        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO("successfully creating data",
+                patientResponseDTO);
 
         BaseResponseDTO<PatientResponseDTO> actual = patientService.createNewPatient(patientRequestDTO());
 
@@ -88,9 +92,11 @@ public class PatientServiceTest {
         List<PatientResponseDTO> patientsResponseDTO = patientsPage.stream().map(patientPage -> modelMapper.map(
                 patientPage, PatientResponseDTO.class)).collect(Collectors.toList());
 
-        PageBaseResponseDTO<List<PatientResponseDTO>> expected = new PageBaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully retrieving data", patientsResponseDTO, new MetaResponseDTO(1, 1,
-                1, 1));
+        PageBaseResponseDTO<List<PatientResponseDTO>> expected = new PageBaseResponseDTO<>(
+                "successfully retrieving data",
+                new MetaResponseDTO(1, 1, 1, 1),
+                patientsResponseDTO
+        );
 
         PageBaseResponseDTO<List<PatientResponseDTO>> actual = patientService.getAllPatients(pageable);
 
@@ -105,8 +111,7 @@ public class PatientServiceTest {
 
         PatientResponseDTO patientResponseDTO = modelMapper.map(patient, PatientResponseDTO.class);
 
-        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "success", patientResponseDTO);
+        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("success", patientResponseDTO);
 
         BaseResponseDTO<PatientResponseDTO> actual = patientService.getPatientDetails(patient.getId());
 
@@ -136,8 +141,8 @@ public class PatientServiceTest {
         PatientRequestDTO updatedPatientRequestDTO = modelMapper.map(patientUpdate, PatientRequestDTO.class);
         PatientResponseDTO updatedPatientResponseDTO = modelMapper.map(patientUpdate, PatientResponseDTO.class);
 
-        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully updating data", updatedPatientResponseDTO);
+        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("successfully updating data",
+                updatedPatientResponseDTO);
 
 
         BaseResponseDTO<PatientResponseDTO> actual = patientService.updatePatient(patientUpdate.getId(),
@@ -150,8 +155,8 @@ public class PatientServiceTest {
     public void deletePatient_whenCurrentIdOfPatientExist_shouldReturnMessagesSuccessWithNullData() {
         Patient patient = patientEntity();
 
-        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully deleting data", null);
+        BaseResponseDTO<PatientResponseDTO> expected = new BaseResponseDTO<>("successfully deleting data",
+                null);
 
         BaseResponseDTO<PatientResponseDTO> actual = patientService.deletePatient(patient.getId());
 
