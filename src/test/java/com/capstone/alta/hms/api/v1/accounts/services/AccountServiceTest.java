@@ -58,8 +58,8 @@ public class AccountServiceTest {
 
         AccountResponseDTO accountResponseDTO = modelMapper.map(account, AccountResponseDTO.class);
 
-        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO("201", HttpStatus.CREATED,
-                "successfully creating data", accountResponseDTO);
+        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO("successfully creating data",
+                accountResponseDTO);
 
         BaseResponseDTO<AccountResponseDTO> actual = accountService.createNewAccount(accountRequestDTO());
 
@@ -82,9 +82,11 @@ public class AccountServiceTest {
         List<AccountResponseDTO> accountsResponseDTO = accountsPage.stream().map(accountPage -> modelMapper.map(
                 accountPage, AccountResponseDTO.class)).collect(Collectors.toList());
 
-        PageBaseResponseDTO<List<AccountResponseDTO>> expected = new PageBaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully retrieving data", accountsResponseDTO, new MetaResponseDTO(1, 1,
-                1, 1));
+        PageBaseResponseDTO<List<AccountResponseDTO>> expected = new PageBaseResponseDTO<>(
+                "successfully retrieving data",
+                new MetaResponseDTO(1, 1, 1, 1),
+                accountsResponseDTO
+            );
 
         PageBaseResponseDTO<List<AccountResponseDTO>> actual = accountService.getAllAccounts(pageable);
 
@@ -99,8 +101,7 @@ public class AccountServiceTest {
 
         AccountResponseDTO accountResponseDTO = modelMapper.map(account, AccountResponseDTO.class);
 
-        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "success", accountResponseDTO);
+        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("success", accountResponseDTO);
 
         BaseResponseDTO<AccountResponseDTO> actual = accountService.getAccountDetails(account.getId());
 
@@ -122,8 +123,8 @@ public class AccountServiceTest {
         AccountRequestDTO updatedAccountRequestDTO = modelMapper.map(accountUpdate, AccountRequestDTO.class);
         AccountResponseDTO updatedAccountResponseDTO = modelMapper.map(accountUpdate, AccountResponseDTO.class);
 
-        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully updating data", updatedAccountResponseDTO);
+        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("successfully updating data",
+                updatedAccountResponseDTO);
 
         when(accountRepository.save(any(Account.class))).thenReturn(accountUpdate);
 
@@ -137,8 +138,8 @@ public class AccountServiceTest {
     public void deleteAccount_whenCurrentIdOfAccountExist_shouldReturnMessagesSuccessWithNullData() {
         Account account = accountEntity();
 
-        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("200", HttpStatus.OK,
-                "successfully deleting data", null);
+        BaseResponseDTO<AccountResponseDTO> expected = new BaseResponseDTO<>("successfully deleting data",
+                null);
 
         BaseResponseDTO<AccountResponseDTO> actual = accountService.deleteAccount(account.getId());
 
@@ -193,7 +194,4 @@ public class AccountServiceTest {
         account.setId(1);
         return account;
     }
-
-
-
 }
