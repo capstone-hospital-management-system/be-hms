@@ -38,8 +38,6 @@ public class ClinicService implements IClinicService {
             clinic, ClinicResponseDTO.class);
 
         return new BaseResponseDTO<ClinicResponseDTO>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             clinicResponseDTO
         );
@@ -56,30 +54,26 @@ public class ClinicService implements IClinicService {
                 .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully retrieving data",
-                clinicResponseDTOS,
                 new MetaResponseDTO(
-                    clinics.getNumber() + 1,
-                    clinics.getSize(),
-                    clinics.getTotalPages(),
-                    clinics.getTotalElements()
-                )
+                        clinics.getNumber() + 1,
+                        clinics.getSize(),
+                        clinics.getTotalPages(),
+                        clinics.getTotalElements()
+                ),
+                clinicResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "data is empty",
-            Collections.emptyList(),
             new MetaResponseDTO(
-                clinics.getNumber() + 1,
-                clinics.getSize(),
-                clinics.getTotalPages(),
-                clinics.getTotalElements()
-            )
+                    clinics.getNumber() + 1,
+                    clinics.getSize(),
+                    clinics.getTotalPages(),
+                    clinics.getTotalElements()
+            ),
+            Collections.emptyList()
         );
     }
 
@@ -92,15 +86,11 @@ public class ClinicService implements IClinicService {
                 clinic, ClinicResponseDTO.class);
 
             return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully retrieving data",
                 clinicResponseDTO
             );
         } else {
             return new BaseResponseDTO<>(
-                "404",
-                HttpStatus.NOT_FOUND,
                 "data not found",
                 null
             );
@@ -119,15 +109,11 @@ public class ClinicService implements IClinicService {
                 clinic, ClinicResponseDTO.class);
 
             return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully updating data",
                 clinicResponseDTO
             );
         } else {
             return new BaseResponseDTO<>(
-                "404",
-                HttpStatus.NOT_FOUND,
                 "data not found",
                 null
             );
@@ -141,15 +127,11 @@ public class ClinicService implements IClinicService {
         if(clinic != null) {
             clinicRepository.delete(clinic);
             return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully deleting data",
                 null
             );
         } else {
             return new BaseResponseDTO<>(
-                "404",
-                HttpStatus.NOT_FOUND,
                 "data not found",
                 null
             );

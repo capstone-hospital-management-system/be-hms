@@ -55,8 +55,6 @@ public class AccountService implements IAccountService {
         Account account = accountRepository.save(newAccount);
 
         return new BaseResponseDTO<AccountResponseDTO>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             modelMapper.map(account, AccountResponseDTO.class)
         );
@@ -72,30 +70,26 @@ public class AccountService implements IAccountService {
                 .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully retrieving data",
-                accountResponseDTOS,
                 new MetaResponseDTO(
-                    accounts.getNumber() + 1,
-                    accounts.getSize(),
-                    accounts.getTotalPages(),
-                    accounts.getTotalElements()
-                )
+                        accounts.getNumber() + 1,
+                        accounts.getSize(),
+                        accounts.getTotalPages(),
+                        accounts.getTotalElements()
+                ),
+                accountResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "data is empty",
-            Collections.emptyList(),
             new MetaResponseDTO(
-            accounts.getNumber() + 1,
-                accounts.getSize(),
-                accounts.getTotalPages(),
-                accounts.getTotalElements()
-            )
+                    accounts.getNumber() + 1,
+                    accounts.getSize(),
+                    accounts.getTotalPages(),
+                    accounts.getTotalElements()
+            ),
+            Collections.emptyList()
         );
     }
 
@@ -103,8 +97,6 @@ public class AccountService implements IAccountService {
     public BaseResponseDTO<AccountResponseDTO> getAccountDetails(Integer id) {
         Account account = accountRepository.findById(id).get();
         return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             modelMapper.map(account, AccountResponseDTO.class)
         );
@@ -127,8 +119,6 @@ public class AccountService implements IAccountService {
         Account updatedAccount = accountRepository.save(updateAccount);
 
         return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "successfully updating data",
             modelMapper.map(updatedAccount, AccountResponseDTO.class)
         );
@@ -139,8 +129,6 @@ public class AccountService implements IAccountService {
         accountRepository.deleteById(id);
 
         return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "successfully deleting data",
             null
         );
@@ -162,15 +150,11 @@ public class AccountService implements IAccountService {
                     .collect(Collectors.toList());
 
             return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully retrieving data",
                     accountResponseDTOS
             );
         }
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "data is empty",
                 Collections.emptyList()
         );

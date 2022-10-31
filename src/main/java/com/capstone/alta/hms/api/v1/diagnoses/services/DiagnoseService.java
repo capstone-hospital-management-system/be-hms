@@ -45,8 +45,6 @@ public class DiagnoseService implements IDiagnoseService {
         Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
         return new BaseResponseDTO<DiagnoseResponseDTO>(
-                "201",
-                HttpStatus.CREATED,
                 "successfully creating data",
                 modelMapper.map(diagnose, DiagnoseResponseDTO.class)
         );
@@ -62,30 +60,26 @@ public class DiagnoseService implements IDiagnoseService {
                     .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<List<DiagnoseResponseDTO>>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully retrieving data",
-                    diagnoseResponseDTOS,
                     new MetaResponseDTO(
                             diagnoses.getNumber() +1,
                             diagnoses.getSize(),
                             diagnoses.getTotalPages(),
                             diagnoses.getTotalElements()
-                    )
+                    ),
+                    diagnoseResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "data is empty",
-                Collections.emptyList(),
                 new MetaResponseDTO(
                         diagnoses.getNumber() +1,
                         diagnoses.getSize(),
                         diagnoses.getTotalPages(),
                         diagnoses.getTotalElements()
-                )
+                ),
+                Collections.emptyList()
         );
     }
 
@@ -96,15 +90,11 @@ public class DiagnoseService implements IDiagnoseService {
         if(diagnose != null) {
             DiagnoseResponseDTO diagnoseResponseDTO = modelMapper.map(diagnose, DiagnoseResponseDTO.class);
             return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully retrieving data",
                     diagnoseResponseDTO
             );
         } else {
             return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
                     "data not found",
                     null
             );
@@ -125,8 +115,6 @@ public class DiagnoseService implements IDiagnoseService {
         Diagnose diagnose = diagnoseRepository.save(newDiagnose);
 
         return new BaseResponseDTO<DiagnoseResponseDTO>(
-                "200",
-                HttpStatus.OK,
                 "successfully updating data",
                 modelMapper.map(diagnose, DiagnoseResponseDTO.class)
         );
@@ -138,8 +126,6 @@ public class DiagnoseService implements IDiagnoseService {
         diagnoseRepository.deleteById(id);
 
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully deleting data",
                 null
         );

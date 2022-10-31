@@ -48,8 +48,6 @@ public class BillService implements IBillService {
     billResponseDTO.setPrescription(modelMapper.map(prescription, PrescriptionResponseDTO.class));
 
     return new BaseResponseDTO<BillResponseDTO>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             billResponseDTO
     );
@@ -73,16 +71,14 @@ public class BillService implements IBillService {
     }
 
     return new PageBaseResponseDTO<List<BillResponseDTO>>(
-            "200",
-            HttpStatus.OK,
             message,
-            billResponseDTOS,
             new MetaResponseDTO(
-                    bills.getNumber() + 1,
-                    bills.getSize(),
-                    bills.getTotalPages(),
-                    bills.getTotalElements()
-            )
+                  bills.getNumber() + 1,
+                  bills.getSize(),
+                  bills.getTotalPages(),
+                  bills.getTotalElements()
+            ),
+            billResponseDTOS
     );
   }
 
@@ -90,8 +86,6 @@ public class BillService implements IBillService {
   public BaseResponseDTO<BillResponseDTO> getBillDetails(Integer id) {
     Bill bill = billRepository.findById(id).get();
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             modelMapper.map(bill, BillResponseDTO.class)
     );
@@ -114,8 +108,6 @@ public class BillService implements IBillService {
     billResponseDTO.setPrescription(modelMapper.map(prescription, PrescriptionResponseDTO.class));
 
     return new BaseResponseDTO<BillResponseDTO>(
-            "200",
-            HttpStatus.OK,
             "successfully updating data",
             billResponseDTO
     );
@@ -126,8 +118,6 @@ public class BillService implements IBillService {
     billRepository.deleteById(id);
 
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "successfully deleting data",
             null
     );
