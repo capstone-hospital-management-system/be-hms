@@ -17,8 +17,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
         BaseResponseDTO response = new BaseResponseDTO<>();
-                response.setCode("500");
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
                 response.setMessage(ex.getMessage() + ", " + request.getDescription(false));
                 response.setData(null);
 
@@ -28,8 +26,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ValidationErrorException.class)
     public ResponseEntity<?> validationErrorExceptionHandler(Exception ex, WebRequest request) {
         BaseResponseDTO<Object> response = new BaseResponseDTO<>();
-        response.setCode("500");
-        response.setStatus(HttpStatus.valueOf(HttpStatus.BAD_REQUEST.value()));
         response.setMessage(ex.getMessage() + ", " + request.getDescription(false));
         response.setData(null);
 
@@ -39,8 +35,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> resourceNotFoundErrorExceptionHandler(Exception ex, WebRequest request) {
         BaseResponseDTO<Object> response = new BaseResponseDTO<>();
-        response.setCode("500");
-        response.setStatus(HttpStatus.valueOf(HttpStatus.NOT_FOUND.value()));
         response.setMessage(ex.getMessage() + ", " + request.getDescription(false));
         response.setData(null);
 
@@ -50,8 +44,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataAlreadyExistException.class)
     public ResponseEntity<?> dataAlreadyExistsErrorExceptionHandler(Exception ex, WebRequest request) {
         BaseResponseDTO<Object> response = new BaseResponseDTO<>();
-        response.setCode("500");
-        response.setStatus(HttpStatus.valueOf(HttpStatus.CONFLICT.value()));
         response.setMessage(ex.getMessage() + ", " + request.getDescription(false));
         response.setData(null);
 
@@ -61,8 +53,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<?> unauthorizedErrorExceptionHandler(Exception ex, WebRequest request) {
         BaseResponseDTO<Object> response = new BaseResponseDTO<>();
-        response.setCode("500");
-        response.setStatus(HttpStatus.valueOf(HttpStatus.UNAUTHORIZED.value()));
         response.setMessage(ex.getMessage() + ", " + request.getDescription(false));
         response.setData(null);
 

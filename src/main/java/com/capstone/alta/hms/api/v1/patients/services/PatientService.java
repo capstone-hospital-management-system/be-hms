@@ -58,8 +58,6 @@ public class PatientService implements IPatientService {
         messagingTemplate.convertAndSend("/topic/messages", message);
 
         return new BaseResponseDTO<>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             patientResponseDTO
         );
@@ -75,30 +73,26 @@ public class PatientService implements IPatientService {
                 .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully retrieving data",
-                patientResponseDTOS,
                 new MetaResponseDTO(
-                    patients.getNumber() + 1,
-                    patients.getSize(),
-                    patients.getTotalPages(),
-                    patients.getTotalElements()
-                )
+                        patients.getNumber() + 1,
+                        patients.getSize(),
+                        patients.getTotalPages(),
+                        patients.getTotalElements()
+                ),
+                patientResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "data is empty",
-            Collections.emptyList(),
             new MetaResponseDTO(
-                patients.getNumber() + 1,
-                patients.getSize(),
-                patients.getTotalPages(),
-                patients.getTotalElements()
-            )
+                    patients.getNumber() + 1,
+                    patients.getSize(),
+                    patients.getTotalPages(),
+                    patients.getTotalElements()
+            ),
+            Collections.emptyList()
         );
     }
 
@@ -106,8 +100,6 @@ public class PatientService implements IPatientService {
     public BaseResponseDTO<PatientResponseDTO> getPatientDetails(Integer id) {
         Patient patient = patientRepository.findById(id).get();
         return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             modelMapper.map(patient, PatientResponseDTO.class)
         );
@@ -135,8 +127,6 @@ public class PatientService implements IPatientService {
         Patient updatedPatient = patientRepository.save(updatePatient);
 
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully updating data",
                 modelMapper.map(updatedPatient, PatientResponseDTO.class)
         );
@@ -147,8 +137,6 @@ public class PatientService implements IPatientService {
         patientRepository.deleteById(id);
 
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully deleting data",
                 null
         );

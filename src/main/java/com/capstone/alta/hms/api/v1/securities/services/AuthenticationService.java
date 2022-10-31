@@ -43,8 +43,6 @@ public class AuthenticationService implements IAuthenticationService {
         String jwt = tokenProvider.generateToken(authentication);
 
         return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             new AuthenticationResponseDTO(jwt, authentication.getPrincipal())
         );

@@ -67,8 +67,6 @@ public class PrescriptionService implements IPrescriptionService {
     response.setMedicines(medicineResponseDTOS);
 
     return new BaseResponseDTO<PrescriptionResponseDTO>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             response
     );
@@ -92,16 +90,14 @@ public class PrescriptionService implements IPrescriptionService {
     }
 
     return new PageBaseResponseDTO<List<PrescriptionResponseDTO>>(
-            "200",
-            HttpStatus.OK,
             message,
-            prescriptionResponseDTOS,
             new MetaResponseDTO(
                     prescriptions.getNumber() + 1,
                     prescriptions.getSize(),
                     prescriptions.getTotalPages(),
                     prescriptions.getTotalElements()
-            )
+            ),
+            prescriptionResponseDTOS
     );
   }
 
@@ -109,8 +105,6 @@ public class PrescriptionService implements IPrescriptionService {
   public BaseResponseDTO<PrescriptionResponseDTO> getPrescriptionDetails(Integer id) {
     Prescription prescription = prescriptionRepository.findById(id).get();
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             modelMapper.map(prescription, PrescriptionResponseDTO.class)
     );
@@ -144,8 +138,6 @@ public class PrescriptionService implements IPrescriptionService {
     response.setMedicines(medicineResponseDTOS);
 
     return new BaseResponseDTO<PrescriptionResponseDTO>(
-            "200",
-            HttpStatus.OK,
             "successfully updating data",
             response
     );
@@ -155,8 +147,6 @@ public class PrescriptionService implements IPrescriptionService {
   public BaseResponseDTO<PrescriptionResponseDTO> deletePrescription(Integer id) {
     prescriptionRepository.deleteById(id);
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "successfully deleting data",
             null
     );

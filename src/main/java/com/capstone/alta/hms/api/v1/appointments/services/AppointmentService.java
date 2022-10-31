@@ -68,8 +68,6 @@ public class AppointmentService implements IAppointmentService{
         */
 
         return new BaseResponseDTO<>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             modelMapper.map(appointment, AppointmentResponseDTO.class)
         );
@@ -85,30 +83,26 @@ public class AppointmentService implements IAppointmentService{
                     .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully retrieving data",
-                appointmentResponseDTOS,
                 new MetaResponseDTO(
-                    appointments.getNumber() + 1,
-                    appointments.getSize(),
-                    appointments.getTotalPages(),
-                    appointments.getTotalElements()
-                )
+                        appointments.getNumber() + 1,
+                        appointments.getSize(),
+                        appointments.getTotalPages(),
+                        appointments.getTotalElements()
+                ),
+                appointmentResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "data is empty",
-            Collections.emptyList(),
             new MetaResponseDTO(
-                appointments.getNumber() + 1,
-                appointments.getSize(),
-                appointments.getTotalPages(),
-                appointments.getTotalElements()
-            )
+                    appointments.getNumber() + 1,
+                    appointments.getSize(),
+                    appointments.getTotalPages(),
+                    appointments.getTotalElements()
+            ),
+            Collections.emptyList()
         );
     }
 
@@ -116,8 +110,6 @@ public class AppointmentService implements IAppointmentService{
     public BaseResponseDTO<AppointmentResponseDTO> getAppointmentDetails(Integer id) {
         Appointment appointment = appointmentRespository.findById(id).get();
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "success",
                 modelMapper.map(appointment, AppointmentResponseDTO.class)
         );
@@ -141,8 +133,6 @@ public class AppointmentService implements IAppointmentService{
         Appointment updatedAppointment = appointmentRespository.save(updateAppointment);
 
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully updating data",
                 modelMapper.map(updatedAppointment, AppointmentResponseDTO.class)
         );
@@ -153,8 +143,6 @@ public class AppointmentService implements IAppointmentService{
         appointmentRespository.deleteById(id);
 
         return new BaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "successfully deleting data",
                 null
         );

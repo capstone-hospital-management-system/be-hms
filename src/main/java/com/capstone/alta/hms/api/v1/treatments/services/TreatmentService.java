@@ -43,8 +43,6 @@ public class TreatmentService implements ITreatmentService {
         TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
 
         return new BaseResponseDTO<TreatmentResponseDTO>(
-                "201",
-                HttpStatus.CREATED,
                 "successfully creating data",
                 treatmentResponseDTO
         );
@@ -60,30 +58,26 @@ public class TreatmentService implements ITreatmentService {
                 .collect(Collectors.toList());
 
             return new PageBaseResponseDTO<List<TreatmentResponseDTO>>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully retrieving data",
-                    treatmentResponseDTOS,
                     new MetaResponseDTO(
                             treatments.getNumber() +1,
                             treatments.getSize(),
                             treatments.getTotalPages(),
                             treatments.getTotalElements()
-                    )
+                    ),
+                    treatmentResponseDTOS
             );
         }
 
         return new PageBaseResponseDTO<>(
-                "200",
-                HttpStatus.OK,
                 "data is empty",
-                Collections.emptyList(),
                 new MetaResponseDTO(
                         treatments.getNumber() +1,
                         treatments.getSize(),
                         treatments.getTotalPages(),
                         treatments.getTotalElements()
-                )
+                ),
+                Collections.emptyList()
         );
     }
 
@@ -95,15 +89,11 @@ public class TreatmentService implements ITreatmentService {
             TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
 
             return new BaseResponseDTO<TreatmentResponseDTO>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully retrieving data",
                     treatmentResponseDTO
             );
         } else {
             return new BaseResponseDTO<TreatmentResponseDTO>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
                     "data not found",
                     null
             );
@@ -122,8 +112,6 @@ public class TreatmentService implements ITreatmentService {
         TreatmentResponseDTO treatmentResponseDTO = modelMapper.map(treatment, TreatmentResponseDTO.class);
 
         return new BaseResponseDTO<TreatmentResponseDTO>(
-                "200",
-                HttpStatus.OK,
                 "successfully updating data",
                 treatmentResponseDTO
         );
@@ -137,15 +125,11 @@ public class TreatmentService implements ITreatmentService {
             treatmentRepository.delete(treatment);
 
             return new BaseResponseDTO<>(
-                    "200",
-                    HttpStatus.OK,
                     "successfully deleting data",
                     null
             );
         } else {
             return new BaseResponseDTO<>(
-                    "404",
-                    HttpStatus.NOT_FOUND,
                     "data not found",
                     null
             );

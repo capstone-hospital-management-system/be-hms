@@ -25,14 +25,14 @@ public class DiagnoseController {
     public ResponseEntity<BaseResponseDTO<DiagnoseResponseDTO>> createNewDiagnoses(@RequestBody DiagnoseRequestDTO diagnoseRequestDTO) {
         BaseResponseDTO<DiagnoseResponseDTO> response = diagnoseService.createDiagnose(diagnoseRequestDTO);
 
-        return new ResponseEntity<>(response, response.getStatus());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/diagnoses")
     public ResponseEntity<PageBaseResponseDTO<List<DiagnoseResponseDTO>>> getAllDiagnoses(Pageable pageable) {
         PageBaseResponseDTO<List<DiagnoseResponseDTO>> response = diagnoseService.getAllDiagnoses(pageable);
 
-        return new ResponseEntity<>(response, response.getStatus());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/diagnoses/{id}")
