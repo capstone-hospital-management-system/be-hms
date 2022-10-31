@@ -11,10 +11,15 @@ import com.capstone.alta.hms.api.v1.clinics.dtos.ClinicResponseDTO;
 import com.capstone.alta.hms.api.v1.clinics.entities.Clinic;
 import com.capstone.alta.hms.api.v1.clinics.repositories.ClinicRepository;
 import com.capstone.alta.hms.api.v1.core.dtos.BaseResponseDTO;
+import com.capstone.alta.hms.api.v1.core.dtos.MetaResponseDTO;
+import com.capstone.alta.hms.api.v1.core.dtos.PageBaseResponseDTO;
+import com.capstone.alta.hms.api.v1.patients.dtos.PatientRequestDTO;
 import com.capstone.alta.hms.api.v1.patients.dtos.PatientResponseDTO;
 import com.capstone.alta.hms.api.v1.patients.entities.Patient;
 import com.capstone.alta.hms.api.v1.patients.repositories.PatientRepository;
 import com.capstone.alta.hms.api.v1.patients.services.PatientService;
+import com.capstone.alta.hms.api.v1.patients.utils.BloodType;
+import com.capstone.alta.hms.api.v1.patients.utils.Gender;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,16 +29,22 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppointmentServiceTest {
@@ -85,6 +96,82 @@ public class AppointmentServiceTest {
                 appointmentResponseDTO);
 
         BaseResponseDTO<AppointmentResponseDTO> actual = appointmentService.createNewAppointment(appointmentRequestDTO());
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @Test
+    public void getAllAppointments_shouldReturnListOfAppointmentsWithPagination() {
+        int page = 1;
+        int per_page = 1;
+
+        Pageable pageable = PageRequest.of(page, per_page);
+
+        Appointment appointment = appointmentEntity();
+
+        Page<Appointment> appointmentsPage = new PageImpl<>(Collections.singletonList(appointment));
+
+        when(appointmentRespository.findAll(pageable)).thenReturn(appointmentsPage);
+
+        List<AppointmentResponseDTO> appointmentResponseDTOS = appointmentsPage.stream().map(appointmentPage -> modelMapper.map(
+                appointmentPage, AppointmentResponseDTO.class)).collect(Collectors.toList());
+
+        PageBaseResponseDTO<List<AppointmentResponseDTO>> expected = new PageBaseResponseDTO<>(
+                "successfully retrieving data",
+                new MetaResponseDTO(1, 1, 1, 1),
+                appointmentResponseDTOS);
+
+        PageBaseResponseDTO<List<AppointmentResponseDTO>> actual = appointmentService.getAllAppointments(pageable);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @Test
+    public void getAppointmentDetails_whenCurrentIdOfAppointmentExist_shouldReturnAppointment() {
+        Appointment appointment = appointmentEntity();
+
+        when(appointmentRespository.findById(appointment.getId())).thenReturn(Optional.of(appointment));
+
+        AppointmentResponseDTO appointmentResponseDTO = modelMapper.map(appointment, AppointmentResponseDTO.class);
+
+        BaseResponseDTO<AppointmentResponseDTO> expected = new BaseResponseDTO<>("success", appointmentResponseDTO);
+
+        BaseResponseDTO<AppointmentResponseDTO> actual = appointmentService.getAppointmentDetails(appointment.getId());
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @Test
+    public void updateAppointment_whenCurrentIdOfAppointmentExist_shouldReturnUpdatedAppointment() {
+        Appointment appointmentUpdate = appointmentEntity();
+        appointmentUpdate.setAppointmentDate(new Date());
+        appointmentUpdate.setPatient(patient());
+        appointmentUpdate.setDoctor(doctor());
+        appointmentUpdate.setClinic(clinic());
+
+        when(appointmentRespository.save(any(Appointment.class))).thenReturn(appointmentUpdate);
+
+        AppointmentRequestDTO updatedAppointmentRequestDTO = modelMapper.map(appointmentUpdate, AppointmentRequestDTO.class);
+        AppointmentResponseDTO updatedAppointmentResponseDTO = modelMapper.map(appointmentUpdate, AppointmentResponseDTO.class);
+
+        BaseResponseDTO<AppointmentResponseDTO> expected = new BaseResponseDTO<>("successfully updating data",
+                updatedAppointmentResponseDTO);
+
+
+        BaseResponseDTO<AppointmentResponseDTO> actual = appointmentService.updateAppointment(appointmentUpdate.getId(),
+                updatedAppointmentRequestDTO);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @Test
+    public void deleteAppoinment_whenCurrentIdOfAppointmentExist_shouldReturnMessagesSuccessWithNullData() {
+        Appointment appointment = appointmentEntity();
+
+        BaseResponseDTO<AppointmentResponseDTO> expected = new BaseResponseDTO<>("successfully deleting data",
+                null);
+
+        BaseResponseDTO<AppointmentResponseDTO> actual = appointmentService.deleteAppointment(appointment.getId());
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
