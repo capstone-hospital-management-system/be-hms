@@ -9,25 +9,19 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class PageBaseResponseDTO<T> implements Serializable {
-    private String code;
-    private HttpStatus status;
     private String message;
-    private T data;
     private MetaResponseDTO meta;
+    private T data;
 
     public PageBaseResponseDTO () { }
 
     public PageBaseResponseDTO(
-        String code,
-        HttpStatus status,
         String message,
-        T data,
-        MetaResponseDTO meta
+        MetaResponseDTO meta,
+        T data
     ) {
-        this.code = code;
-        this.status = status;
         this.message = message;
-        this.data = data;
         this.meta = meta;
+        this.data = data;
     }
 }

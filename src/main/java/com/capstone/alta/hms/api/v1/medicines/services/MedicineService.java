@@ -31,8 +31,6 @@ public class MedicineService implements IMedicineService {
     Medicine medicine = medicineRepository.save(modelMapper.map(medicineRequestDTO, Medicine.class));
     MedicineResponseDTO medicineResponseDTO = modelMapper.map(medicine, MedicineResponseDTO.class);
     return new BaseResponseDTO<MedicineResponseDTO>(
-            "201",
-            HttpStatus.CREATED,
             "successfully creating data",
             medicineResponseDTO
     );
@@ -56,16 +54,14 @@ public class MedicineService implements IMedicineService {
     }
 
     return new PageBaseResponseDTO<List<MedicineResponseDTO>>(
-            "200",
-            HttpStatus.OK,
             message,
-            medicineResponseDTOS,
             new MetaResponseDTO(
                     medicines.getNumber() + 1,
                     medicines.getSize(),
                     medicines.getTotalPages(),
                     medicines.getTotalElements()
-            )
+            ),
+            medicineResponseDTOS
     );
   }
 
@@ -73,8 +69,6 @@ public class MedicineService implements IMedicineService {
   public BaseResponseDTO<MedicineResponseDTO> getMedicineDetails(Integer id) {
     Medicine medicine = medicineRepository.findById(id).get();
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "success",
             modelMapper.map(medicine, MedicineResponseDTO.class)
     );
@@ -88,8 +82,6 @@ public class MedicineService implements IMedicineService {
     Medicine medicine = medicineRepository.save(medicineUpdate);
 
     return new BaseResponseDTO<MedicineResponseDTO>(
-            "200",
-            HttpStatus.OK,
             "successfully updating data",
             modelMapper.map(medicine, MedicineResponseDTO.class)
     );
@@ -100,8 +92,6 @@ public class MedicineService implements IMedicineService {
     medicineRepository.deleteById(id);
 
     return new BaseResponseDTO<>(
-            "200",
-            HttpStatus.OK,
             "successfully deleting data",
             null
     );
